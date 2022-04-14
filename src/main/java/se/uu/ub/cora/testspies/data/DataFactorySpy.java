@@ -36,7 +36,6 @@ public class DataFactorySpy implements DataFactory {
 	@Override
 	public DataList factorListUsingNameOfDataType(String nameOfDataType) {
 		MCR.addCall("nameOfDataType", nameOfDataType);
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -54,11 +53,12 @@ public class DataFactorySpy implements DataFactory {
 
 	@Override
 	public DataGroup factorGroupUsingNameInData(String nameInData) {
-		// TODO Auto-generated method stub
+		MCR.addCall("nameInData", nameInData);
 		return null;
 	}
 
 	@Override
+	@Deprecated
 	public DataGroup factorGroupAsLinkUsingNameInDataAndTypeAndId(String nameInData,
 			String recordType, String recordId) {
 		// TODO Auto-generated method stub
