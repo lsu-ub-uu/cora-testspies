@@ -24,6 +24,7 @@ import se.uu.ub.cora.data.DataAttribute;
 import se.uu.ub.cora.data.DataChild;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 
+@SuppressWarnings("exports")
 public class DataChildSpy implements DataChild {
 	public MethodCallRecorder MCR = new MethodCallRecorder();
 

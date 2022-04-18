@@ -30,6 +30,7 @@ import se.uu.ub.cora.data.DataResourceLink;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
+@SuppressWarnings("exports")
 public class DataFactorySpy implements DataFactory {
 
 	public MethodCallRecorder MCR = new MethodCallRecorder();

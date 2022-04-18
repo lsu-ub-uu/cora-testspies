@@ -27,6 +27,7 @@ import se.uu.ub.cora.data.DataChild;
 import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 
+@SuppressWarnings("exports")
 public class DataGroupSpy implements DataGroup {
 	public MethodCallRecorder MCR = new MethodCallRecorder();
 

@@ -4,9 +4,15 @@
 module se.uu.ub.cora.testspies {
 
 	requires org.testng;
-	requires transitive se.uu.ub.cora.data;
+	/**
+	 * logger and data are not transitive, as it is used for tests and all usages may not need both,
+	 * leaving then non transitive means we do not need to include the one we are not using
+	 */
+	requires se.uu.ub.cora.logger;
+	requires se.uu.ub.cora.data;
 	requires transitive se.uu.ub.cora.testutils;
 
+	exports se.uu.ub.cora.testspies.logger;
 	exports se.uu.ub.cora.testspies.data;
 
 }

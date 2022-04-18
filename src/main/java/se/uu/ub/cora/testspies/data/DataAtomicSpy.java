@@ -27,6 +27,7 @@ import se.uu.ub.cora.data.DataAttribute;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
+@SuppressWarnings("exports")
 public class DataAtomicSpy implements DataAtomic {
 	public MethodCallRecorder MCR = new MethodCallRecorder();
 	public MethodReturnValues MRV = new MethodReturnValues();
