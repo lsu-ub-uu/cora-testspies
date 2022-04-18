@@ -25,24 +25,16 @@ import org.testng.annotations.Test;
 
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 
-public class DataGroupSpyTest {
-	DataGroupSpy dataGroup;
+public class DataChildSpyTest {
+	DataChildSpy dataElement;
 
 	@BeforeMethod
 	public void beforeMethod() {
-		dataGroup = new DataGroupSpy();
+		dataElement = new DataChildSpy();
 	}
 
 	@Test
 	public void testMakeSureMCRExists() throws Exception {
-		assertTrue(dataGroup.MCR instanceof MethodCallRecorder);
-	}
-
-	@Test
-	public void testAddChild() throws Exception {
-		DataChildSpy dataElement = new DataChildSpy();
-		dataGroup.addChild(dataElement);
-
-		dataGroup.MCR.assertParameter("addChild", 0, "dataElement", dataElement);
+		assertTrue(dataElement.MCR instanceof MethodCallRecorder);
 	}
 }

@@ -22,23 +22,36 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Supplier;
 
-import se.uu.ub.cora.data.DataAtomic;
+import se.uu.ub.cora.data.Action;
 import se.uu.ub.cora.data.DataAttribute;
+import se.uu.ub.cora.data.DataRecordLink;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
-public class DataAtomicSpy implements DataAtomic {
+public class DataRecordLinkSpy implements DataRecordLink {
 	public MethodCallRecorder MCR = new MethodCallRecorder();
 	public MethodReturnValues MRV = new MethodReturnValues();
 
-	public DataAtomicSpy() {
+	public DataRecordLinkSpy() {
 		MCR.useMRV(MRV);
+		MRV.setDefaultReturnValuesSupplier("hasReadAction", (Supplier<Boolean>) () -> false);
 		MRV.setDefaultReturnValuesSupplier("getRepeatId", String::new);
+		MRV.setDefaultReturnValuesSupplier("getNameInData", String::new);
 		MRV.setDefaultReturnValuesSupplier("hasAttributes", (Supplier<Boolean>) () -> false);
 		MRV.setDefaultReturnValuesSupplier("getAttribute", DataAttributeSpy::new);
 		MRV.setDefaultReturnValuesSupplier("getAttributes", ArrayList<DataAttribute>::new);
-		MRV.setDefaultReturnValuesSupplier("getNameInData", String::new);
-		MRV.setDefaultReturnValuesSupplier("getValue", String::new);
+		MRV.setDefaultReturnValuesSupplier("getLinkedRecordId", String::new);
+		MRV.setDefaultReturnValuesSupplier("getLinkedRecordType", String::new);
+	}
+
+	@Override
+	public void addAction(Action action) {
+		MCR.addCall("action", action);
+	}
+
+	@Override
+	public boolean hasReadAction() {
+		return (boolean) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
@@ -48,6 +61,11 @@ public class DataAtomicSpy implements DataAtomic {
 
 	@Override
 	public String getRepeatId() {
+		return (String) MCR.addCallAndReturnFromMRV();
+	}
+
+	@Override
+	public String getNameInData() {
 		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
@@ -72,12 +90,13 @@ public class DataAtomicSpy implements DataAtomic {
 	}
 
 	@Override
-	public String getNameInData() {
+	public String getLinkedRecordId() {
 		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
-	public String getValue() {
+	public String getLinkedRecordType() {
 		return (String) MCR.addCallAndReturnFromMRV();
 	}
+
 }

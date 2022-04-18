@@ -21,10 +21,10 @@ package se.uu.ub.cora.testspies.data;
 import java.util.Collection;
 
 import se.uu.ub.cora.data.DataAttribute;
-import se.uu.ub.cora.data.DataElement;
+import se.uu.ub.cora.data.DataChild;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 
-public class DataElementSpy implements DataElement {
+public class DataChildSpy implements DataChild {
 	public MethodCallRecorder MCR = new MethodCallRecorder();
 
 	@Override

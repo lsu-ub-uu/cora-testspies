@@ -29,15 +29,16 @@ import java.util.function.Supplier;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import se.uu.ub.cora.data.Action;
 import se.uu.ub.cora.data.DataAttribute;
 import se.uu.ub.cora.testspies.spy.MCRSpy;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
-public class DataAtomicSpyTest {
+public class DataRecordLinkSpyTest {
 	private static final String ADD_CALL = "addCall";
 	private static final String ADD_CALL_AND_RETURN_FROM_MRV = "addCallAndReturnFromMRV";
-	DataAtomicSpy dataAtomic;
+	DataRecordLinkSpy dataRecordLink;
 	private MCRSpy MCRSpy;
 	private MethodCallRecorder mcrForSpy;
 
@@ -45,96 +46,62 @@ public class DataAtomicSpyTest {
 	public void beforeMethod() {
 		MCRSpy = new MCRSpy();
 		mcrForSpy = MCRSpy.MCR;
-		dataAtomic = new DataAtomicSpy();
+		dataRecordLink = new DataRecordLinkSpy();
 	}
 
 	@Test
 	public void testMakeSureSpyHelpersAreSetUp() throws Exception {
-		assertTrue(dataAtomic.MCR instanceof MethodCallRecorder);
-		assertTrue(dataAtomic.MRV instanceof MethodReturnValues);
-		assertSame(dataAtomic.MCR.onlyForTestGetMRV(), dataAtomic.MRV);
+		assertTrue(dataRecordLink.MCR instanceof MethodCallRecorder);
+		assertTrue(dataRecordLink.MRV instanceof MethodReturnValues);
+		assertSame(dataRecordLink.MCR.onlyForTestGetMRV(), dataRecordLink.MRV);
 	}
 
 	@Test
-	public void testsetRepeatId() throws Exception {
-		dataAtomic.MCR = MCRSpy;
+	public void testAddAction() throws Exception {
+		dataRecordLink.MCR = MCRSpy;
 
-		dataAtomic.setRepeatId("repeat1");
+		dataRecordLink.addAction(Action.CREATE);
 
-		mcrForSpy.assertParameter(ADD_CALL, 0, "repeatId", "repeat1");
+		mcrForSpy.assertParameter(ADD_CALL, 0, "action", Action.CREATE);
 	}
 
 	@Test
-	public void testDefaultGetRepeatId() throws Exception {
-		assertTrue(dataAtomic.getRepeatId() instanceof String);
+	public void testDefaultHasReadAction() throws Exception {
+		assertFalse(dataRecordLink.hasReadAction());
 	}
 
 	@Test
-	public void testGetRepeatId() throws Exception {
-		dataAtomic.MCR = MCRSpy;
-		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
-
-		String returnedValue = dataAtomic.getRepeatId();
-
-		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
-		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
-	}
-
-	@Test
-	public void testAddAttributeByIdWithValue() throws Exception {
-		dataAtomic.MCR = MCRSpy;
-
-		dataAtomic.addAttributeByIdWithValue("attribId", "attribValue");
-
-		mcrForSpy.assertParameter(ADD_CALL, 0, "nameInData", "attribId");
-		mcrForSpy.assertParameter(ADD_CALL, 0, "value", "attribValue");
-	}
-
-	@Test
-	public void testDefaultHasAttributes() throws Exception {
-		assertFalse(dataAtomic.hasAttributes());
-	}
-
-	@Test
-	public void testHasAttributes() throws Exception {
-		dataAtomic.MCR = MCRSpy;
+	public void testHasReadAction() throws Exception {
+		dataRecordLink.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				(Supplier<Boolean>) () -> true);
 
-		boolean retunedValue = dataAtomic.hasAttributes();
+		boolean retunedValue = dataRecordLink.hasReadAction();
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
 	}
 
 	@Test
-	public void testDefaultGetAttribute() throws Exception {
-		assertTrue(dataAtomic.getAttribute("nameInData") instanceof DataAttribute);
+	public void testsetRepeatId() throws Exception {
+		dataRecordLink.MCR = MCRSpy;
+
+		dataRecordLink.setRepeatId("repeat1");
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "repeatId", "repeat1");
 	}
 
 	@Test
-	public void testGetAttribute() throws Exception {
-		dataAtomic.MCR = MCRSpy;
-		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, DataAttributeSpy::new);
-
-		var returnedValue = dataAtomic.getAttribute("nameInData");
-
-		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
-		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	public void testDefaultGetRepeatId() throws Exception {
+		assertTrue(dataRecordLink.getRepeatId() instanceof String);
 	}
 
 	@Test
-	public void testDefaultGetAttributes() throws Exception {
-		assertTrue(dataAtomic.getAttributes() instanceof Collection<DataAttribute>);
-	}
+	public void testGetRepeatId() throws Exception {
+		dataRecordLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
 
-	@Test
-	public void testGetAttributes() throws Exception {
-		dataAtomic.MCR = MCRSpy;
-		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
-				ArrayList<DataAttribute>::new);
-
-		var returnedValue = dataAtomic.getAttributes();
+		String returnedValue = dataRecordLink.getRepeatId();
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
@@ -142,33 +109,111 @@ public class DataAtomicSpyTest {
 
 	@Test
 	public void testDefaultGetNameInData() throws Exception {
-		assertTrue(dataAtomic.getNameInData() instanceof String);
+		assertTrue(dataRecordLink.getNameInData() instanceof String);
 	}
 
 	@Test
 	public void testGetNameInData() throws Exception {
-		dataAtomic.MCR = MCRSpy;
+		dataRecordLink.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
 
-		String returnedValue = dataAtomic.getNameInData();
+		String returnedValue = dataRecordLink.getNameInData();
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
 	}
 
 	@Test
-	public void testDefaultGetValue() throws Exception {
-		assertTrue(dataAtomic.getValue() instanceof String);
+	public void testAddAttributeByIdWithValue() throws Exception {
+		dataRecordLink.MCR = MCRSpy;
+
+		dataRecordLink.addAttributeByIdWithValue("attribId", "attribValue");
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "nameInData", "attribId");
+		mcrForSpy.assertParameter(ADD_CALL, 0, "value", "attribValue");
 	}
 
 	@Test
-	public void testGetValue() throws Exception {
-		dataAtomic.MCR = MCRSpy;
-		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+	public void testDefaultHasAttributes() throws Exception {
+		assertFalse(dataRecordLink.hasAttributes());
+	}
 
-		String returnedValue = dataAtomic.getValue();
+	@Test
+	public void testHasAttributes() throws Exception {
+		dataRecordLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				(Supplier<Boolean>) () -> true);
+
+		boolean retunedValue = dataRecordLink.hasAttributes();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
+	}
+
+	@Test
+	public void testDefaultGetAttribute() throws Exception {
+		assertTrue(dataRecordLink.getAttribute("nameInData") instanceof DataAttribute);
+	}
+
+	@Test
+	public void testGetAttribute() throws Exception {
+		dataRecordLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				DataAttributeSpy::new);
+
+		var returnedValue = dataRecordLink.getAttribute("nameInData");
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
 	}
+
+	@Test
+	public void testDefaultGetAttributes() throws Exception {
+		assertTrue(dataRecordLink.getAttributes() instanceof Collection<DataAttribute>);
+	}
+
+	@Test
+	public void testGetAttributes() throws Exception {
+		dataRecordLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				ArrayList<DataAttribute>::new);
+
+		var returnedValue = dataRecordLink.getAttributes();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultGetLinkedRecordId() throws Exception {
+		assertTrue(dataRecordLink.getLinkedRecordId() instanceof String);
+	}
+
+	@Test
+	public void testGetLinkedRecordId() throws Exception {
+		dataRecordLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataRecordLink.getLinkedRecordId();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultGetLinkedRecordType() throws Exception {
+		assertTrue(dataRecordLink.getLinkedRecordType() instanceof String);
+	}
+
+	@Test
+	public void testGetLinkedRecordType() throws Exception {
+		dataRecordLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataRecordLink.getLinkedRecordType();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
 }

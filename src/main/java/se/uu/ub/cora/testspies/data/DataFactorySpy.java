@@ -28,10 +28,12 @@ import se.uu.ub.cora.data.DataRecordGroup;
 import se.uu.ub.cora.data.DataRecordLink;
 import se.uu.ub.cora.data.DataResourceLink;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
+import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
 public class DataFactorySpy implements DataFactory {
 
 	public MethodCallRecorder MCR = new MethodCallRecorder();
+	public MethodReturnValues MRV = new MethodReturnValues();
 
 	@Override
 	public DataList factorListUsingNameOfDataType(String nameOfDataType) {
@@ -54,15 +56,9 @@ public class DataFactorySpy implements DataFactory {
 	@Override
 	public DataGroup factorGroupUsingNameInData(String nameInData) {
 		MCR.addCall("nameInData", nameInData);
-		return null;
-	}
-
-	@Override
-	@Deprecated
-	public DataGroup factorGroupAsLinkUsingNameInDataAndTypeAndId(String nameInData,
-			String recordType, String recordId) {
-		// TODO Auto-generated method stub
-		return null;
+		var returnValue = MRV.getReturnValue(nameInData);
+		MCR.addReturned(returnValue);
+		return (DataGroup) returnValue;
 	}
 
 	@Override
@@ -74,14 +70,18 @@ public class DataFactorySpy implements DataFactory {
 	@Override
 	public DataRecordLink factorRecordLinkUsingNameInDataAndTypeAndId(String nameInData,
 			String recordType, String recordId) {
-		// TODO Auto-generated method stub
-		return null;
+		MCR.addCall("nameInData", nameInData, "recordType", recordType, "recordId", recordId);
+		DataRecordLinkSpy recordLink = new DataRecordLinkSpy();
+		MCR.addReturned(recordLink);
+		return recordLink;
 	}
 
 	@Override
 	public DataResourceLink factorResourceLinkUsingNameInData(String nameInData) {
-		// TODO Auto-generated method stub
-		return null;
+		MCR.addCall("nameInData", nameInData);
+		DataResourceLink resourceLink = new DataResourceLinkSpy();
+		MCR.addReturned(resourceLink);
+		return resourceLink;
 	}
 
 	@Override
@@ -101,6 +101,12 @@ public class DataFactorySpy implements DataFactory {
 
 	@Override
 	public DataAttribute factorAttributeUsingNameInDataAndValue(String nameInData, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DataRecordGroup factorRecordGroupFromDataGroup(DataGroup dataGroup) {
 		// TODO Auto-generated method stub
 		return null;
 	}

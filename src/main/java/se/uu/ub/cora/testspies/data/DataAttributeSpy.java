@@ -18,57 +18,18 @@
  */
 package se.uu.ub.cora.testspies.data;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.function.Supplier;
-
-import se.uu.ub.cora.data.DataAtomic;
 import se.uu.ub.cora.data.DataAttribute;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
-public class DataAtomicSpy implements DataAtomic {
+public class DataAttributeSpy implements DataAttribute {
 	public MethodCallRecorder MCR = new MethodCallRecorder();
 	public MethodReturnValues MRV = new MethodReturnValues();
 
-	public DataAtomicSpy() {
+	public DataAttributeSpy() {
 		MCR.useMRV(MRV);
-		MRV.setDefaultReturnValuesSupplier("getRepeatId", String::new);
-		MRV.setDefaultReturnValuesSupplier("hasAttributes", (Supplier<Boolean>) () -> false);
-		MRV.setDefaultReturnValuesSupplier("getAttribute", DataAttributeSpy::new);
-		MRV.setDefaultReturnValuesSupplier("getAttributes", ArrayList<DataAttribute>::new);
 		MRV.setDefaultReturnValuesSupplier("getNameInData", String::new);
 		MRV.setDefaultReturnValuesSupplier("getValue", String::new);
-	}
-
-	@Override
-	public void setRepeatId(String repeatId) {
-		MCR.addCall("repeatId", repeatId);
-	}
-
-	@Override
-	public String getRepeatId() {
-		return (String) MCR.addCallAndReturnFromMRV();
-	}
-
-	@Override
-	public void addAttributeByIdWithValue(String nameInData, String value) {
-		MCR.addCall("nameInData", nameInData, "value", value);
-	}
-
-	@Override
-	public boolean hasAttributes() {
-		return (boolean) MCR.addCallAndReturnFromMRV();
-	}
-
-	@Override
-	public DataAttribute getAttribute(String nameInData) {
-		return (DataAttribute) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
-	}
-
-	@Override
-	public Collection<DataAttribute> getAttributes() {
-		return (Collection<DataAttribute>) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
@@ -80,4 +41,5 @@ public class DataAtomicSpy implements DataAtomic {
 	public String getValue() {
 		return (String) MCR.addCallAndReturnFromMRV();
 	}
+
 }

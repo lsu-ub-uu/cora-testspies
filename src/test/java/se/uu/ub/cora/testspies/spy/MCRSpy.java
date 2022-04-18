@@ -16,25 +16,27 @@
  *     You should have received a copy of the GNU General Public License
  *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.uu.ub.cora.testspies.data;
-
-import static org.testng.Assert.assertTrue;
-
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+package se.uu.ub.cora.testspies.spy;
 
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
+import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
-public class DataElementSpyTest {
-	DataElementSpy dataElement;
+public class MCRSpy extends MethodCallRecorder {
+	public MethodCallRecorder MCR = new MethodCallRecorder();
+	public MethodReturnValues MRV = new MethodReturnValues();
 
-	@BeforeMethod
-	public void beforeMethod() {
-		dataElement = new DataElementSpy();
+	public MCRSpy() {
+		MCR.useMRV(MRV);
 	}
 
-	@Test
-	public void testMakeSureMCRExists() throws Exception {
-		assertTrue(dataElement.MCR instanceof MethodCallRecorder);
+	@Override
+	public void addCall(Object... parameters) {
+		MCR.addCall(parameters);
+	}
+
+	@Override
+	public Object addCallAndReturnFromMRV(Object... parameters) {
+
+		return MCR.addCallAndReturnFromMRV(parameters);
 	}
 }
