@@ -18,56 +18,64 @@
  */
 package se.uu.ub.cora.testspies.data;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Supplier;
 
 import se.uu.ub.cora.data.DataAttribute;
 import se.uu.ub.cora.data.DataChild;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
+import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
 @SuppressWarnings("exports")
 public class DataChildSpy implements DataChild {
 	public MethodCallRecorder MCR = new MethodCallRecorder();
+	public MethodReturnValues MRV = new MethodReturnValues();
+
+	public DataChildSpy() {
+		MCR.useMRV(MRV);
+		MRV.setDefaultReturnValuesSupplier("getNameInData", String::new);
+		MRV.setDefaultReturnValuesSupplier("getRepeatId", String::new);
+		MRV.setDefaultReturnValuesSupplier("hasAttributes", (Supplier<Boolean>) () -> false);
+		MRV.setDefaultReturnValuesSupplier("getAttribute", DataAttributeSpy::new);
+		MRV.setDefaultReturnValuesSupplier("getAttributes", ArrayList<DataAttribute>::new);
+		// MRV.setDefaultReturnValuesSupplier("hasReadAction", (Supplier<Boolean>) () -> false);
+		// MRV.setDefaultReturnValuesSupplier("getLinkedRecordId", String::new);
+		// MRV.setDefaultReturnValuesSupplier("getLinkedRecordType", String::new);
+	}
 
 	@Override
 	public String getNameInData() {
-		// TODO Auto-generated method stub
-		return null;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public void setRepeatId(String repeatId) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("repeatId", repeatId);
 	}
 
 	@Override
 	public String getRepeatId() {
-		// TODO Auto-generated method stub
-		return null;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public void addAttributeByIdWithValue(String nameInData, String value) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("nameInData", nameInData, "value", value);
 	}
 
 	@Override
 	public boolean hasAttributes() {
-		// TODO Auto-generated method stub
-		return false;
+		return (boolean) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public DataAttribute getAttribute(String nameInData) {
-		// TODO Auto-generated method stub
-		return null;
+		return (DataAttribute) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
 	}
 
 	@Override
 	public Collection<DataAttribute> getAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Collection<DataAttribute>) MCR.addCallAndReturnFromMRV();
 	}
-
 }

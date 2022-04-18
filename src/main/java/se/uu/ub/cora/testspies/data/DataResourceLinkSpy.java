@@ -1,6 +1,26 @@
+/*
+ * Copyright 2022 Olov McKie
+ *
+ * This file is part of Cora.
+ *
+ *     Cora is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     Cora is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package se.uu.ub.cora.testspies.data;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Supplier;
 
 import se.uu.ub.cora.data.Action;
 import se.uu.ub.cora.data.DataAttribute;
@@ -13,58 +33,63 @@ public class DataResourceLinkSpy implements DataResourceLink {
 	public MethodCallRecorder MCR = new MethodCallRecorder();
 	public MethodReturnValues MRV = new MethodReturnValues();
 
+	public DataResourceLinkSpy() {
+		MCR.useMRV(MRV);
+		MRV.setDefaultReturnValuesSupplier("hasReadAction", (Supplier<Boolean>) () -> false);
+		MRV.setDefaultReturnValuesSupplier("getRepeatId", String::new);
+		MRV.setDefaultReturnValuesSupplier("getNameInData", String::new);
+		MRV.setDefaultReturnValuesSupplier("hasAttributes", (Supplier<Boolean>) () -> false);
+		MRV.setDefaultReturnValuesSupplier("getAttribute", DataAttributeSpy::new);
+		MRV.setDefaultReturnValuesSupplier("getAttributes", ArrayList<DataAttribute>::new);
+		MRV.setDefaultReturnValuesSupplier("getStreamId", String::new);
+		MRV.setDefaultReturnValuesSupplier("getFileName", String::new);
+		MRV.setDefaultReturnValuesSupplier("getFileSize", String::new);
+		MRV.setDefaultReturnValuesSupplier("getMimeType", String::new);
+	}
+
 	@Override
 	public void addAction(Action action) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("action", action);
 	}
 
 	@Override
 	public boolean hasReadAction() {
-		// TODO Auto-generated method stub
-		return false;
+		return (boolean) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public void setRepeatId(String repeatId) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("repeatId", repeatId);
 	}
 
 	@Override
 	public String getRepeatId() {
-		// TODO Auto-generated method stub
-		return null;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public String getNameInData() {
-		// TODO Auto-generated method stub
-		return null;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public void addAttributeByIdWithValue(String nameInData, String value) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("nameInData", nameInData, "value", value);
 	}
 
 	@Override
 	public boolean hasAttributes() {
-		// TODO Auto-generated method stub
-		return false;
+		return (boolean) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public DataAttribute getAttribute(String nameInData) {
-		// TODO Auto-generated method stub
-		return null;
+		return (DataAttribute) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
 	}
 
 	@Override
 	public Collection<DataAttribute> getAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Collection<DataAttribute>) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
@@ -74,52 +99,37 @@ public class DataResourceLinkSpy implements DataResourceLink {
 
 	@Override
 	public String getStreamId() {
-		MCR.addCall();
-		String returnValue = (String) MRV.getReturnValue();
-		MCR.addReturned(returnValue);
-		return returnValue;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public void setFileName(String fileName) {
 		MCR.addCall("fileName", fileName);
-
 	}
 
 	@Override
 	public String getFileName() {
-		MCR.addCall();
-		String returnValue = (String) MRV.getReturnValue();
-		MCR.addReturned(returnValue);
-		return returnValue;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public void setFileSize(String fileSize) {
 		MCR.addCall("fileSize", fileSize);
-
 	}
 
 	@Override
 	public String getFileSize() {
-		MCR.addCall();
-		String returnValue = (String) MRV.getReturnValue();
-		MCR.addReturned(returnValue);
-		return returnValue;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public void setMimeType(String mimeType) {
 		MCR.addCall("mimeType", mimeType);
-
 	}
 
 	@Override
 	public String getMimeType() {
-		MCR.addCall();
-		String returnValue = (String) MRV.getReturnValue();
-		MCR.addReturned(returnValue);
-		return returnValue;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 }

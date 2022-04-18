@@ -83,7 +83,7 @@ public class DataRecordLinkSpyTest {
 	}
 
 	@Test
-	public void testsetRepeatId() throws Exception {
+	public void testSetRepeatId() throws Exception {
 		dataRecordLink.MCR = MCRSpy;
 
 		dataRecordLink.setRepeatId("repeat1");

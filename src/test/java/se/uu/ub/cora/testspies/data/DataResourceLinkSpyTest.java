@@ -18,100 +18,270 @@
  */
 package se.uu.ub.cora.testspies.data;
 
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.function.Supplier;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import se.uu.ub.cora.data.Action;
+import se.uu.ub.cora.data.DataAttribute;
+import se.uu.ub.cora.testspies.spy.MCRSpy;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
 public class DataResourceLinkSpyTest {
+	private static final String ADD_CALL = "addCall";
+	private static final String ADD_CALL_AND_RETURN_FROM_MRV = "addCallAndReturnFromMRV";
 	DataResourceLinkSpy dataResourceLink;
-	private MethodCallRecorder MCR;
-	private MethodReturnValues MRV;
+	private MCRSpy MCRSpy;
+	private MethodCallRecorder mcrForSpy;
 
 	@BeforeMethod
 	public void beforeMethod() {
+		MCRSpy = new MCRSpy();
+		mcrForSpy = MCRSpy.MCR;
 		dataResourceLink = new DataResourceLinkSpy();
-		MCR = dataResourceLink.MCR;
-		MRV = dataResourceLink.MRV;
 	}
 
 	@Test
-	public void testMakeSureMCRExists() throws Exception {
+	public void testMakeSureSpyHelpersAreSetUp() throws Exception {
 		assertTrue(dataResourceLink.MCR instanceof MethodCallRecorder);
-	}
-
-	@Test
-	public void testMakeSureMRVExists() throws Exception {
 		assertTrue(dataResourceLink.MRV instanceof MethodReturnValues);
+		assertSame(dataResourceLink.MCR.onlyForTestGetMRV(), dataResourceLink.MRV);
 	}
 
 	@Test
-	public void testStreamId() throws Exception {
-		dataResourceLink.setStreamId("stream");
-		MCR.assertParameter("setStreamId", 0, "streamId", "stream");
+	public void testAddAction() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+
+		dataResourceLink.addAction(Action.CREATE);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "action", Action.CREATE);
 	}
 
 	@Test
-	public void getStreamId() throws Exception {
-		MRV.setReturnValues("getStreamId", List.of("firstId"));
-
-		dataResourceLink.getStreamId();
-
-		MCR.assertParameters("getStreamId", 0);
-		MCR.assertReturn("getStreamId", 0, "firstId");
+	public void testDefaultHasReadAction() throws Exception {
+		assertFalse(dataResourceLink.hasReadAction());
 	}
 
 	@Test
-	public void testFilename() throws Exception {
-		dataResourceLink.setFileName("fileN");
-		MCR.assertParameter("setFileName", 0, "fileName", "fileN");
+	public void testHasReadAction() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				(Supplier<Boolean>) () -> true);
+
+		boolean retunedValue = dataResourceLink.hasReadAction();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
 	}
 
 	@Test
-	public void getFileName() throws Exception {
-		MRV.setReturnValues("getFileName", List.of("filename2"));
+	public void testSetRepeatId() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
 
-		dataResourceLink.getFileName();
+		dataResourceLink.setRepeatId("repeat1");
 
-		MCR.assertParameters("getFileName", 0);
-		MCR.assertReturn("getFileName", 0, "filename2");
+		mcrForSpy.assertParameter(ADD_CALL, 0, "repeatId", "repeat1");
 	}
 
 	@Test
-	public void testFileSize() throws Exception {
+	public void testDefaultGetRepeatId() throws Exception {
+		assertTrue(dataResourceLink.getRepeatId() instanceof String);
+	}
+
+	@Test
+	public void testGetRepeatId() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataResourceLink.getRepeatId();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultGetNameInData() throws Exception {
+		assertTrue(dataResourceLink.getNameInData() instanceof String);
+	}
+
+	@Test
+	public void testGetNameInData() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataResourceLink.getNameInData();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testAddAttributeByIdWithValue() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+
+		dataResourceLink.addAttributeByIdWithValue("attribId", "attribValue");
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "nameInData", "attribId");
+		mcrForSpy.assertParameter(ADD_CALL, 0, "value", "attribValue");
+	}
+
+	@Test
+	public void testDefaultHasAttributes() throws Exception {
+		assertFalse(dataResourceLink.hasAttributes());
+	}
+
+	@Test
+	public void testHasAttributes() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				(Supplier<Boolean>) () -> true);
+
+		boolean retunedValue = dataResourceLink.hasAttributes();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
+	}
+
+	@Test
+	public void testDefaultGetAttribute() throws Exception {
+		assertTrue(dataResourceLink.getAttribute("nameInData") instanceof DataAttribute);
+	}
+
+	@Test
+	public void testGetAttribute() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				DataAttributeSpy::new);
+
+		var returnedValue = dataResourceLink.getAttribute("nameInData");
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultGetAttributes() throws Exception {
+		assertTrue(dataResourceLink.getAttributes() instanceof Collection<DataAttribute>);
+	}
+
+	@Test
+	public void testGetAttributes() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				ArrayList<DataAttribute>::new);
+
+		var returnedValue = dataResourceLink.getAttributes();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testSetStreamId() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+
+		dataResourceLink.setStreamId("stream1");
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "streamId", "stream1");
+	}
+
+	@Test
+	public void testDefaultGetStreamId() throws Exception {
+		assertTrue(dataResourceLink.getStreamId() instanceof String);
+	}
+
+	@Test
+	public void testGetStreamId() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataResourceLink.getStreamId();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testSetFileName() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+
+		dataResourceLink.setFileName("fileName1");
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "fileName", "fileName1");
+	}
+
+	@Test
+	public void testDefaultGetFileName() throws Exception {
+		assertTrue(dataResourceLink.getFileName() instanceof String);
+	}
+
+	@Test
+	public void testGetFileName() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataResourceLink.getFileName();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testSetFileSize() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+
 		dataResourceLink.setFileSize("1234");
-		MCR.assertParameter("setFileSize", 0, "fileSize", "1234");
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "fileSize", "1234");
 	}
 
 	@Test
-	public void getFileSize() throws Exception {
-		MRV.setReturnValues("getFileSize", List.of("filesize2"));
-
-		dataResourceLink.getFileSize();
-
-		MCR.assertParameters("getFileSize", 0);
-		MCR.assertReturn("getFileSize", 0, "filesize2");
+	public void testDefaultGetFileSize() throws Exception {
+		assertTrue(dataResourceLink.getFileSize() instanceof String);
 	}
 
 	@Test
-	public void testMimeType() throws Exception {
-		dataResourceLink.setMimeType("bla");
-		MCR.assertParameter("setMimeType", 0, "mimeType", "bla");
+	public void testGetFileSize() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataResourceLink.getFileSize();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
 	}
 
 	@Test
-	public void getMimeType() throws Exception {
-		MRV.setReturnValues("getMimeType", List.of("MimeType2"));
+	public void testSetMimeType() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
 
-		dataResourceLink.getMimeType();
+		dataResourceLink.setMimeType("someMime");
 
-		MCR.assertParameters("getMimeType", 0);
-		MCR.assertReturn("getMimeType", 0, "MimeType2");
+		mcrForSpy.assertParameter(ADD_CALL, 0, "mimeType", "someMime");
 	}
 
+	@Test
+	public void testDefaultGetMimeType() throws Exception {
+		assertTrue(dataResourceLink.getMimeType() instanceof String);
+	}
+
+	@Test
+	public void testGetMimeType() throws Exception {
+		dataResourceLink.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataResourceLink.getMimeType();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
 }

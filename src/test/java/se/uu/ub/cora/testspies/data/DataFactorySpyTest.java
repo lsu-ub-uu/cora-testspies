@@ -18,6 +18,7 @@
  */
 package se.uu.ub.cora.testspies.data;
 
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.util.List;
@@ -38,6 +39,13 @@ public class DataFactorySpyTest {
 		dataFactory = new DataFactorySpy();
 		MCR = dataFactory.MCR;
 		MRV = dataFactory.MRV;
+	}
+
+	@Test
+	public void testMakeSureSpyHelpersAreSetUp() throws Exception {
+		assertTrue(dataFactory.MCR instanceof MethodCallRecorder);
+		assertTrue(dataFactory.MRV instanceof MethodReturnValues);
+		assertSame(dataFactory.MCR.onlyForTestGetMRV(), dataFactory.MRV);
 	}
 
 	@Test

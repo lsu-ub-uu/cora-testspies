@@ -36,6 +36,18 @@ public class DataFactorySpy implements DataFactory {
 	public MethodCallRecorder MCR = new MethodCallRecorder();
 	public MethodReturnValues MRV = new MethodReturnValues();
 
+	public DataFactorySpy() {
+		MCR.useMRV(MRV);
+		// MRV.setDefaultReturnValuesSupplier("hasReadAction", (Supplier<Boolean>) () -> false);
+		// MRV.setDefaultReturnValuesSupplier("getRepeatId", String::new);
+		// MRV.setDefaultReturnValuesSupplier("getNameInData", String::new);
+		// MRV.setDefaultReturnValuesSupplier("hasAttributes", (Supplier<Boolean>) () -> false);
+		// MRV.setDefaultReturnValuesSupplier("getAttribute", DataAttributeSpy::new);
+		// MRV.setDefaultReturnValuesSupplier("getAttributes", ArrayList<DataAttribute>::new);
+		// MRV.setDefaultReturnValuesSupplier("getLinkedRecordId", String::new);
+		// MRV.setDefaultReturnValuesSupplier("getLinkedRecordType", String::new);
+	}
+
 	@Override
 	public DataList factorListUsingNameOfDataType(String nameOfDataType) {
 		MCR.addCall("nameOfDataType", nameOfDataType);
