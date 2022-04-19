@@ -56,7 +56,7 @@ public class DataGroupSpyTest {
 	}
 
 	@Test
-	public void testAddChild() throws Exception {
+	public void testAddChildNoSpy() throws Exception {
 		DataChildSpy dataElement = new DataChildSpy();
 		dataGroup.addChild(dataElement);
 
@@ -83,22 +83,6 @@ public class DataGroupSpyTest {
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
 
 		String returnedValue = dataGroup.getRepeatId();
-
-		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
-		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
-	}
-
-	@Test
-	public void testDefaultGetNameInData() throws Exception {
-		assertTrue(dataGroup.getNameInData() instanceof String);
-	}
-
-	@Test
-	public void testGetNameInData() throws Exception {
-		dataGroup.MCR = MCRSpy;
-		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
-
-		String returnedValue = dataGroup.getNameInData();
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
@@ -166,4 +150,64 @@ public class DataGroupSpyTest {
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
 	}
 
+	@Test
+	public void testDefaultGetNameInData() throws Exception {
+		assertTrue(dataGroup.getNameInData() instanceof String);
+	}
+
+	@Test
+	public void testGetNameInData() throws Exception {
+		dataGroup.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataGroup.getNameInData();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultHasChildren() throws Exception {
+		assertTrue(dataGroup.hasChildren());
+	}
+
+	@Test
+	public void testHasChildren() throws Exception {
+		dataGroup.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				(Supplier<Boolean>) () -> false);
+
+		boolean retunedValue = dataGroup.hasChildren();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
+	}
+
+	@Test
+	public void testDefaultContainsChildWithNameInData() throws Exception {
+		assertFalse(dataGroup.containsChildWithNameInData("nameInData"));
+	}
+
+	@Test
+	public void testContainsChildWithNameInData() throws Exception {
+		dataGroup.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				(Supplier<Boolean>) () -> false);
+
+		boolean retunedValue = dataGroup.containsChildWithNameInData("nameInData");
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
+	}
+
+	@Test
+	public void testAddChild() throws Exception {
+		DataChildSpy dataElement = new DataChildSpy();
+		dataGroup.MCR = MCRSpy;
+
+		dataGroup.addChild(dataElement);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "dataElement", dataElement);
+	}
 }

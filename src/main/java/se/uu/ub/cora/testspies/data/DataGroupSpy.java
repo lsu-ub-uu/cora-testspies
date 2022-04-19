@@ -42,6 +42,9 @@ public class DataGroupSpy implements DataGroup {
 		MRV.setDefaultReturnValuesSupplier("hasAttributes", (Supplier<Boolean>) () -> false);
 		MRV.setDefaultReturnValuesSupplier("getAttribute", DataAttributeSpy::new);
 		MRV.setDefaultReturnValuesSupplier("getAttributes", ArrayList<DataAttribute>::new);
+		MRV.setDefaultReturnValuesSupplier("hasChildren", (Supplier<Boolean>) () -> true);
+		MRV.setDefaultReturnValuesSupplier("containsChildWithNameInData",
+				(Supplier<Boolean>) () -> false);
 	}
 
 	@Override
@@ -81,19 +84,16 @@ public class DataGroupSpy implements DataGroup {
 
 	@Override
 	public boolean hasChildren() {
-		// TODO Auto-generated method stub
-		return false;
+		return (boolean) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public boolean containsChildWithNameInData(String nameInData) {
-		// TODO Auto-generated method stub
-		return false;
+		return (boolean) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
 	}
 
 	@Override
 	public void addChild(DataChild dataElement) {
-		// TODO test
 		MCR.addCall("dataElement", dataElement);
 	}
 
