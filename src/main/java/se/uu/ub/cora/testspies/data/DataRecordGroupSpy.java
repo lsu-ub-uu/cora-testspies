@@ -27,17 +27,17 @@ import se.uu.ub.cora.data.DataAtomic;
 import se.uu.ub.cora.data.DataAttribute;
 import se.uu.ub.cora.data.DataChild;
 import se.uu.ub.cora.data.DataGroup;
+import se.uu.ub.cora.data.DataRecordGroup;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
 @SuppressWarnings("exports")
-public class DataGroupSpy implements DataGroup {
+public class DataRecordGroupSpy implements DataRecordGroup {
 	public MethodCallRecorder MCR = new MethodCallRecorder();
 	public MethodReturnValues MRV = new MethodReturnValues();
 
-	public DataGroupSpy() {
+	public DataRecordGroupSpy() {
 		MCR.useMRV(MRV);
-		MRV.setDefaultReturnValuesSupplier("getRepeatId", String::new);
 		MRV.setDefaultReturnValuesSupplier("getNameInData", String::new);
 		MRV.setDefaultReturnValuesSupplier("hasAttributes", (Supplier<Boolean>) () -> false);
 		MRV.setDefaultReturnValuesSupplier("getAttribute", DataAttributeSpy::new);
@@ -67,16 +67,6 @@ public class DataGroupSpy implements DataGroup {
 				(Supplier<Boolean>) () -> true);
 		MRV.setDefaultReturnValuesSupplier("removeAllChildrenWithNameInDataAndAttributes",
 				(Supplier<Boolean>) () -> true);
-	}
-
-	@Override
-	public void setRepeatId(String repeatId) {
-		MCR.addCall("repeatId", repeatId);
-	}
-
-	@Override
-	public String getRepeatId() {
-		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override

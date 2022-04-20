@@ -38,90 +38,85 @@ public class DataFactorySpy implements DataFactory {
 
 	public DataFactorySpy() {
 		MCR.useMRV(MRV);
-		// MRV.setDefaultReturnValuesSupplier("hasReadAction", (Supplier<Boolean>) () -> false);
-		// MRV.setDefaultReturnValuesSupplier("getRepeatId", String::new);
-		// MRV.setDefaultReturnValuesSupplier("getNameInData", String::new);
-		// MRV.setDefaultReturnValuesSupplier("hasAttributes", (Supplier<Boolean>) () -> false);
-		// MRV.setDefaultReturnValuesSupplier("getAttribute", DataAttributeSpy::new);
-		// MRV.setDefaultReturnValuesSupplier("getAttributes", ArrayList<DataAttribute>::new);
-		// MRV.setDefaultReturnValuesSupplier("getLinkedRecordId", String::new);
-		// MRV.setDefaultReturnValuesSupplier("getLinkedRecordType", String::new);
+		MRV.setDefaultReturnValuesSupplier("factorListUsingNameOfDataType", DataListSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorRecordUsingDataGroup", DataRecordSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorRecordGroupUsingNameInData",
+				DataRecordGroupSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorRecordGroupFromDataGroup",
+				DataRecordGroupSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorGroupUsingNameInData", DataGroupSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorRecordLinkUsingNameInData",
+				DataRecordLinkSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorRecordLinkUsingNameInDataAndTypeAndId",
+				DataRecordLinkSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorResourceLinkUsingNameInData",
+				DataResourceLinkSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorAtomicUsingNameInDataAndValue",
+				DataAtomicSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorAtomicUsingNameInDataAndValueAndRepeatId",
+				DataAtomicSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorAttributeUsingNameInDataAndValue",
+				DataAttributeSpy::new);
 	}
 
 	@Override
 	public DataList factorListUsingNameOfDataType(String nameOfDataType) {
-		MCR.addCall("nameOfDataType", nameOfDataType);
-		return null;
+		return (DataList) MCR.addCallAndReturnFromMRV("nameOfDataType", nameOfDataType);
 	}
 
 	@Override
 	public DataRecord factorRecordUsingDataGroup(DataGroup dataGroup) {
-		// TODO Auto-generated method stub
-		return null;
+		return (DataRecord) MCR.addCallAndReturnFromMRV("dataGroup", dataGroup);
 	}
 
 	@Override
 	public DataRecordGroup factorRecordGroupUsingNameInData(String nameInData) {
-		// TODO Auto-generated method stub
-		return null;
+		return (DataRecordGroup) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
+	}
+
+	@Override
+	public DataRecordGroup factorRecordGroupFromDataGroup(DataGroup dataGroup) {
+		return (DataRecordGroup) MCR.addCallAndReturnFromMRV("dataGroup", dataGroup);
 	}
 
 	@Override
 	public DataGroup factorGroupUsingNameInData(String nameInData) {
-		MCR.addCall("nameInData", nameInData);
-		var returnValue = MRV.getReturnValue(nameInData);
-		MCR.addReturned(returnValue);
-		return (DataGroup) returnValue;
+		return (DataGroup) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
 	}
 
 	@Override
 	public DataRecordLink factorRecordLinkUsingNameInData(String nameInData) {
-		// TODO Auto-generated method stub
-		return null;
+		return (DataRecordLink) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
 	}
 
 	@Override
 	public DataRecordLink factorRecordLinkUsingNameInDataAndTypeAndId(String nameInData,
 			String recordType, String recordId) {
-		MCR.addCall("nameInData", nameInData, "recordType", recordType, "recordId", recordId);
-		DataRecordLinkSpy recordLink = new DataRecordLinkSpy();
-		MCR.addReturned(recordLink);
-		return recordLink;
+		return (DataRecordLink) MCR.addCallAndReturnFromMRV("nameInData", nameInData, "recordType",
+				recordType, "recordId", recordId);
 	}
 
 	@Override
 	public DataResourceLink factorResourceLinkUsingNameInData(String nameInData) {
-		MCR.addCall("nameInData", nameInData);
-		DataResourceLink resourceLink = new DataResourceLinkSpy();
-		MCR.addReturned(resourceLink);
-		return resourceLink;
+		return (DataResourceLink) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
 	}
 
 	@Override
 	public DataAtomic factorAtomicUsingNameInDataAndValue(String nameInData, String value) {
-		MCR.addCall("nameInData", nameInData, "value", value);
-		DataAtomicSpy returnedValue = new DataAtomicSpy();
-		MCR.addReturned(returnedValue);
-		return returnedValue;
+		return (DataAtomic) MCR.addCallAndReturnFromMRV("nameInData", nameInData, "value", value);
 	}
 
 	@Override
 	public DataAtomic factorAtomicUsingNameInDataAndValueAndRepeatId(String nameInData,
 			String value, String repeatId) {
-		// TODO Auto-generated method stub
-		return null;
+		return (DataAtomic) MCR.addCallAndReturnFromMRV("nameInData", nameInData, "value", value,
+				"repeatId", repeatId);
 	}
 
 	@Override
 	public DataAttribute factorAttributeUsingNameInDataAndValue(String nameInData, String value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public DataRecordGroup factorRecordGroupFromDataGroup(DataGroup dataGroup) {
-		// TODO Auto-generated method stub
-		return null;
+		return (DataAttribute) MCR.addCallAndReturnFromMRV("nameInData", nameInData, "value",
+				value);
 	}
 
 }

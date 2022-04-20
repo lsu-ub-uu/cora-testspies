@@ -16,7 +16,7 @@
 		<logger.version>2.5.0</logger.version>
 		<coradata.version>7.0.0</coradata.version>
 		<json.version>3.3.0</json.version>
-		<testutils.version>1.4.0</testutils.version>
+		<testutils.version>1.5-SNAPSHOT</testutils.version>
 	</properties>
 	
 	<scm>

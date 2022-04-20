@@ -38,10 +38,10 @@ import se.uu.ub.cora.testspies.spy.MCRSpy;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
-public class DataGroupSpyTest {
+public class DataRecordGroupSpyTest {
 	private static final String ADD_CALL = "addCall";
 	private static final String ADD_CALL_AND_RETURN_FROM_MRV = "addCallAndReturnFromMRV";
-	DataGroupSpy dataGroup;
+	DataRecordGroupSpy dataGroup;
 	private MCRSpy MCRSpy;
 	private MethodCallRecorder mcrForSpy;
 
@@ -49,7 +49,7 @@ public class DataGroupSpyTest {
 	public void beforeMethod() {
 		MCRSpy = new MCRSpy();
 		mcrForSpy = MCRSpy.MCR;
-		dataGroup = new DataGroupSpy();
+		dataGroup = new DataRecordGroupSpy();
 	}
 
 	@Test
@@ -65,31 +65,6 @@ public class DataGroupSpyTest {
 		dataGroup.addChild(dataChild);
 
 		dataGroup.MCR.assertParameter("addChild", 0, "dataChild", dataChild);
-	}
-
-	@Test
-	public void testSetRepeatId() throws Exception {
-		dataGroup.MCR = MCRSpy;
-
-		dataGroup.setRepeatId("repeat1");
-
-		mcrForSpy.assertParameter(ADD_CALL, 0, "repeatId", "repeat1");
-	}
-
-	@Test
-	public void testDefaultGetRepeatId() throws Exception {
-		assertTrue(dataGroup.getRepeatId() instanceof String);
-	}
-
-	@Test
-	public void testGetRepeatId() throws Exception {
-		dataGroup.MCR = MCRSpy;
-		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
-
-		String returnedValue = dataGroup.getRepeatId();
-
-		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
-		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
 	}
 
 	@Test
