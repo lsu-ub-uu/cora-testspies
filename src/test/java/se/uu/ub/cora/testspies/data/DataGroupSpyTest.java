@@ -30,6 +30,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import se.uu.ub.cora.data.DataAttribute;
+import se.uu.ub.cora.data.DataChild;
 import se.uu.ub.cora.testspies.spy.MCRSpy;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
@@ -57,10 +58,10 @@ public class DataGroupSpyTest {
 
 	@Test
 	public void testAddChildNoSpy() throws Exception {
-		DataChildSpy dataElement = new DataChildSpy();
-		dataGroup.addChild(dataElement);
+		DataChildSpy dataChild = new DataChildSpy();
+		dataGroup.addChild(dataChild);
 
-		dataGroup.MCR.assertParameter("addChild", 0, "dataElement", dataElement);
+		dataGroup.MCR.assertParameter("addChild", 0, "dataChild", dataChild);
 	}
 
 	@Test
@@ -203,11 +204,21 @@ public class DataGroupSpyTest {
 
 	@Test
 	public void testAddChild() throws Exception {
-		DataChildSpy dataElement = new DataChildSpy();
+		DataChildSpy dataChild = new DataChildSpy();
 		dataGroup.MCR = MCRSpy;
 
-		dataGroup.addChild(dataElement);
+		dataGroup.addChild(dataChild);
 
-		mcrForSpy.assertParameter(ADD_CALL, 0, "dataElement", dataElement);
+		mcrForSpy.assertParameter(ADD_CALL, 0, "dataChild", dataChild);
+	}
+
+	@Test
+	public void testAddChildren() throws Exception {
+		Collection<DataChild> children = new ArrayList<>();
+		dataGroup.MCR = MCRSpy;
+
+		dataGroup.addChildren(children);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "dataChildren", children);
 	}
 }

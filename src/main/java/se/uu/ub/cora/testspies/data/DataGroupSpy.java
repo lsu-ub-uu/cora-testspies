@@ -93,14 +93,13 @@ public class DataGroupSpy implements DataGroup {
 	}
 
 	@Override
-	public void addChild(DataChild dataElement) {
-		MCR.addCall("dataElement", dataElement);
+	public void addChild(DataChild dataChild) {
+		MCR.addCall("dataChild", dataChild);
 	}
 
 	@Override
-	public void addChildren(Collection<DataChild> dataElements) {
-		// TODO Auto-generated method stub
-
+	public void addChildren(Collection<DataChild> dataChildren) {
+		MCR.addCall("dataChildren", dataChildren);
 	}
 
 	@Override
