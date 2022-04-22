@@ -49,4 +49,88 @@ public class DataRecordSpyTest {
 		assertSame(dataRecord.MCR.onlyForTestGetMRV(), dataRecord.MRV);
 	}
 
+	@Test
+	public void testDefaultGetType() throws Exception {
+		assertTrue(dataRecord.getType() instanceof String);
+	}
+
+	@Test
+	public void testGetType() throws Exception {
+		dataRecord.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataRecord.getType();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultGetId() throws Exception {
+		assertTrue(dataRecord.getId() instanceof String);
+	}
+
+	@Test
+	public void testGetId() throws Exception {
+		dataRecord.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataRecord.getId();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testSetDataGroup() throws Exception {
+		dataRecord.MCR = MCRSpy;
+		DataGroupSpy dataGroup = new DataGroupSpy();
+
+		dataRecord.setDataGroup(dataGroup);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "dataGroup", dataGroup);
+	}
+
+	@Test
+	public void testDefaultGetDataGroup() throws Exception {
+		assertTrue(dataRecord.getDataGroup() instanceof DataGroupSpy);
+	}
+
+	@Test
+	public void testGetDataGroup() throws Exception {
+		dataRecord.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, DataGroupSpy::new);
+
+		var returnedValue = dataRecord.getDataGroup();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	// TODO:addAction
+	// TODO:hasActions
+	// TODO:getActions
+	// TODO:addReadPermission
+	// TODO:addReadPermissions
+	// TODO:getReadPermissions
+	// TODO:hasReadPermissions
+	// TODO:addWritePermission
+	// TODO:addWritePermissions
+	// TODO:getWritePermissions
+	// TODO:hasWritePermissions
+	@Test
+	public void testDefaultGetSearchId() throws Exception {
+		assertTrue(dataRecord.getSearchId() instanceof String);
+	}
+
+	@Test
+	public void testGetSearchId() throws Exception {
+		dataRecord.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataRecord.getSearchId();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
 }

@@ -10,9 +10,11 @@ module se.uu.ub.cora.testspies {
 	 */
 	requires se.uu.ub.cora.logger;
 	requires se.uu.ub.cora.data;
+	requires se.uu.ub.cora.spider;
 	requires transitive se.uu.ub.cora.testutils;
 
 	exports se.uu.ub.cora.testspies.logger;
 	exports se.uu.ub.cora.testspies.data;
+	exports se.uu.ub.cora.testspies.spider;
 
 }

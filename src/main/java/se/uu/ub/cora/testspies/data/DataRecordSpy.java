@@ -35,36 +35,31 @@ public class DataRecordSpy implements DataRecord {
 
 	public DataRecordSpy() {
 		MCR.useMRV(MRV);
-		// MRV.setDefaultReturnValuesSupplier("getRepeatId", String::new);
-		// MRV.setDefaultReturnValuesSupplier("hasAttributes", (Supplier<Boolean>) () -> false);
-		// MRV.setDefaultReturnValuesSupplier("getAttribute", DataAttributeSpy::new);
-		// MRV.setDefaultReturnValuesSupplier("getAttributes", ArrayList<DataAttribute>::new);
-		// MRV.setDefaultReturnValuesSupplier("getNameInData", String::new);
-		// MRV.setDefaultReturnValuesSupplier("getValue", String::new);
+		MRV.setDefaultReturnValuesSupplier("getType", String::new);
+		MRV.setDefaultReturnValuesSupplier("getId", String::new);
+		MRV.setDefaultReturnValuesSupplier("getSearchId", String::new);
+		MRV.setDefaultReturnValuesSupplier("getDataGroup", DataGroupSpy::new);
 	}
 
 	@Override
 	public String getType() {
-		// TODO Auto-generated method stub
-		return null;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public void setDataGroup(DataGroup dataGroup) {
-		// TODO Auto-generated method stub
+		MCR.addCall("dataGroup", dataGroup);
 
 	}
 
 	@Override
 	public DataGroup getDataGroup() {
-		// TODO Auto-generated method stub
-		return null;
+		return (DataGroup) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
@@ -135,8 +130,7 @@ public class DataRecordSpy implements DataRecord {
 
 	@Override
 	public String getSearchId() {
-		// TODO Auto-generated method stub
-		return null;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 }
