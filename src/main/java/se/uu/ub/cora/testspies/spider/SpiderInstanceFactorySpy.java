@@ -40,7 +40,9 @@ public class SpiderInstanceFactorySpy implements SpiderInstanceFactory {
 	public SpiderInstanceFactorySpy() {
 		MCR.useMRV(MRV);
 		MRV.setDefaultReturnValuesSupplier("getDependencyProviderClassName", String::new);
+		MRV.setDefaultReturnValuesSupplier("factorRecordReader", RecordReaderSpy::new);
 		MRV.setDefaultReturnValuesSupplier("factorRecordCreator", RecordCreatorSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorRecordUpdater", RecordUpdaterSpy::new);
 	}
 
 	@Override
@@ -50,7 +52,7 @@ public class SpiderInstanceFactorySpy implements SpiderInstanceFactory {
 
 	@Override
 	public RecordReader factorRecordReader() {
-		return null;
+		return (RecordReader) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
@@ -70,7 +72,7 @@ public class SpiderInstanceFactorySpy implements SpiderInstanceFactory {
 
 	@Override
 	public RecordUpdater factorRecordUpdater() {
-		return null;
+		return (RecordUpdater) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
