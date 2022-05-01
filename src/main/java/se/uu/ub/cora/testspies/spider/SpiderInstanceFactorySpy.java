@@ -41,8 +41,17 @@ public class SpiderInstanceFactorySpy implements SpiderInstanceFactory {
 		MCR.useMRV(MRV);
 		MRV.setDefaultReturnValuesSupplier("getDependencyProviderClassName", String::new);
 		MRV.setDefaultReturnValuesSupplier("factorRecordReader", RecordReaderSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorIncomingLinksReader",
+				IncomingLinksReaderSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorRecordListReader", RecordListReaderSpy::new);
 		MRV.setDefaultReturnValuesSupplier("factorRecordCreator", RecordCreatorSpy::new);
 		MRV.setDefaultReturnValuesSupplier("factorRecordUpdater", RecordUpdaterSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorRecordDeleter", RecordDeleterSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorUploader", UploaderSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorDownloader", DownloaderSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorRecordSearcher", RecordSearcherSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorRecordValidator", RecordValidatorSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorRecordListIndexer", RecordListIndexerSpy::new);
 	}
 
 	@Override
@@ -57,12 +66,12 @@ public class SpiderInstanceFactorySpy implements SpiderInstanceFactory {
 
 	@Override
 	public IncomingLinksReader factorIncomingLinksReader() {
-		return null;
+		return (IncomingLinksReader) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public RecordListReader factorRecordListReader() {
-		return null;
+		return (RecordListReader) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
@@ -77,31 +86,31 @@ public class SpiderInstanceFactorySpy implements SpiderInstanceFactory {
 
 	@Override
 	public RecordDeleter factorRecordDeleter() {
-		return null;
+		return (RecordDeleter) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public Uploader factorUploader() {
-		return null;
+		return (Uploader) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public Downloader factorDownloader() {
-		return null;
+		return (Downloader) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public RecordSearcher factorRecordSearcher() {
-		return null;
+		return (RecordSearcher) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public RecordValidator factorRecordValidator() {
-		return null;
+		return (RecordValidator) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public RecordListIndexer factorRecordListIndexer() {
-		return null;
+		return (RecordListIndexer) MCR.addCallAndReturnFromMRV();
 	}
 }

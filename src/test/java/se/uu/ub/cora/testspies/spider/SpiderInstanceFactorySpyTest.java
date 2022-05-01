@@ -24,6 +24,8 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import se.uu.ub.cora.spider.record.IncomingLinksReader;
+import se.uu.ub.cora.spider.record.RecordListReader;
 import se.uu.ub.cora.testspies.spy.MCRSpy;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
@@ -81,8 +83,40 @@ public class SpiderInstanceFactorySpyTest {
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
 	}
-	// TODO://factorIncomingLinksReader
-	// TODO://factorRecordListReader
+
+	@Test
+	public void testDefaultFactorIncomingLinksReader() throws Exception {
+		assertTrue(instanceFactory.factorIncomingLinksReader() instanceof IncomingLinksReader);
+	}
+
+	@Test
+	public void testFactorIncomingLinksReader() throws Exception {
+		instanceFactory.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				IncomingLinksReaderSpy::new);
+
+		var returnedValue = instanceFactory.factorIncomingLinksReader();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultFactorRecordListReader() throws Exception {
+		assertTrue(instanceFactory.factorRecordListReader() instanceof RecordListReader);
+	}
+
+	@Test
+	public void testFactorRecordListReader() throws Exception {
+		instanceFactory.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				RecordListReaderSpy::new);
+
+		var returnedValue = instanceFactory.factorRecordListReader();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
 
 	@Test
 	public void testDefaultFactorRecordCreator() throws Exception {
@@ -118,10 +152,104 @@ public class SpiderInstanceFactorySpyTest {
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
 	}
 
-	// TODO://factorRecordDeleter
-	// TODO://factorUploader
-	// TODO://factorRecordSearcher
-	// TODO://factorRecordValidator
-	// TODO://factorRecordListIndexer
+	@Test
+	public void testDefaultFactorRecordDeleter() throws Exception {
+		assertTrue(instanceFactory.factorRecordDeleter() instanceof RecordDeleterSpy);
+	}
+
+	@Test
+	public void testFactorRecordDeleter() throws Exception {
+		instanceFactory.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				RecordDeleterSpy::new);
+
+		var returnedValue = instanceFactory.factorRecordDeleter();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultFactorUploader() throws Exception {
+		assertTrue(instanceFactory.factorUploader() instanceof UploaderSpy);
+	}
+
+	@Test
+	public void testFactorUploader() throws Exception {
+		instanceFactory.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, UploaderSpy::new);
+
+		var returnedValue = instanceFactory.factorUploader();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultFactorDownloader() throws Exception {
+		assertTrue(instanceFactory.factorDownloader() instanceof DownloaderSpy);
+	}
+
+	@Test
+	public void testFactorDownloader() throws Exception {
+		instanceFactory.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, DownloaderSpy::new);
+
+		var returnedValue = instanceFactory.factorDownloader();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultFactorRecordSearcher() throws Exception {
+		assertTrue(instanceFactory.factorRecordSearcher() instanceof RecordSearcherSpy);
+	}
+
+	@Test
+	public void testFactorRecordSearcher() throws Exception {
+		instanceFactory.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				RecordSearcherSpy::new);
+
+		var returnedValue = instanceFactory.factorRecordSearcher();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultFactorRecordValidator() throws Exception {
+		assertTrue(instanceFactory.factorRecordValidator() instanceof RecordValidatorSpy);
+	}
+
+	@Test
+	public void testFactorRecordValidator() throws Exception {
+		instanceFactory.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				RecordValidatorSpy::new);
+
+		var returnedValue = instanceFactory.factorRecordValidator();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultFactorRecordListIndexer() throws Exception {
+		assertTrue(instanceFactory.factorRecordListIndexer() instanceof RecordListIndexerSpy);
+	}
+
+	@Test
+	public void testFactorRecordListIndexer() throws Exception {
+		instanceFactory.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				RecordListIndexerSpy::new);
+
+		var returnedValue = instanceFactory.factorRecordListIndexer();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
 
 }
