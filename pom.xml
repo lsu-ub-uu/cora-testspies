@@ -22,6 +22,7 @@
 		<storage.version>6.2.0</storage.version>
 		<search.version>4.4.0</search.version>
 		<bookkeeper.version>7.0.0</bookkeeper.version>
+		<httphandler.version>2.6.0</httphandler.version>
 	</properties>
 	
 	<scm>
@@ -80,6 +81,13 @@
 			<version>${bookkeeper.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+            <groupId>se.uu.ub.cora</groupId>
+            <artifactId>httphandler</artifactId>
+            <version>${httphandler.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        
 		<dependency>
 			<groupId>se.uu.ub.cora</groupId>
 			<artifactId>testutils</artifactId>
