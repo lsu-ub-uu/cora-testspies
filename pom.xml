@@ -17,7 +17,7 @@
 		<coradata.version>7.0.0</coradata.version>
 		<json.version>3.3.0</json.version>
 		<spider.version>7.0.0</spider.version>
-		<testutils.version>1.5-SNAPSHOT</testutils.version>
+		<testutils.version>1.5.0</testutils.version>
 		<beefeater.version>3.7.0</beefeater.version>
 		<storage.version>6.2.0</storage.version>
 		<search.version>4.4.0</search.version>
