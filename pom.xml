@@ -7,7 +7,7 @@
 	</parent>
 
 	<artifactId>testspies</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>testspies</name>
@@ -29,7 +29,7 @@
 		<connection>scm:git:https://github.com/lsu-ub-uu/cora-testspies.git</connection>
 		<developerConnection>scm:git:https://github.com/lsu-ub-uu/cora-testspies.git</developerConnection>
 		<url>https://github.com/lsu-ub-uu/cora-testspies.git</url>
-		<tag>HEAD</tag>
+		<tag>release/1.1</tag>
 	</scm>
 
 	<dependencies>
