@@ -26,6 +26,7 @@ import java.util.function.Supplier;
 import se.uu.ub.cora.data.DataAtomic;
 import se.uu.ub.cora.data.DataAttribute;
 import se.uu.ub.cora.data.DataChild;
+import se.uu.ub.cora.data.DataChildFilter;
 import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
@@ -66,6 +67,10 @@ public class DataGroupSpy implements DataGroup {
 		MRV.setDefaultReturnValuesSupplier("removeAllChildrenWithNameInData",
 				(Supplier<Boolean>) () -> true);
 		MRV.setDefaultReturnValuesSupplier("removeAllChildrenWithNameInDataAndAttributes",
+				(Supplier<Boolean>) () -> true);
+		MRV.setDefaultReturnValuesSupplier("getAllChildrenMatchingFilter",
+				ArrayList<DataChild>::new);
+		MRV.setDefaultReturnValuesSupplier("removeAllChildrenMatchingFilter",
 				(Supplier<Boolean>) () -> true);
 	}
 
@@ -200,6 +205,16 @@ public class DataGroupSpy implements DataGroup {
 			DataAttribute... childAttributes) {
 		return (boolean) MCR.addCallAndReturnFromMRV("nameInData", nameInData, "childAttributes",
 				childAttributes);
+	}
+
+	@Override
+	public List<DataChild> getAllChildrenMatchingFilter(DataChildFilter childFilter) {
+		return (List<DataChild>) MCR.addCallAndReturnFromMRV("childFilter", childFilter);
+	}
+
+	@Override
+	public boolean removeAllChildrenMatchingFilter(DataChildFilter childFilter) {
+		return (boolean) MCR.addCallAndReturnFromMRV("childFilter", childFilter);
 	}
 
 }

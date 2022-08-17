@@ -6,7 +6,7 @@ module se.uu.ub.cora.testspies {
 	requires org.testng;
 	/**
 	 * logger, data etc. are not transitive, as it is used for tests and all usages may not need
-	 * both, leaving then non transitive means we do not need to include the one we are not using
+	 * both, leaving them non transitive means we do not need to include the one we are not using
 	 */
 	requires se.uu.ub.cora.logger;
 	requires se.uu.ub.cora.data;

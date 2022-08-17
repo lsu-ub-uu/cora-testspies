@@ -33,6 +33,7 @@ import org.testng.annotations.Test;
 import se.uu.ub.cora.data.DataAtomic;
 import se.uu.ub.cora.data.DataAttribute;
 import se.uu.ub.cora.data.DataChild;
+import se.uu.ub.cora.data.DataChildFilter;
 import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.testspies.spy.MCRSpy;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
@@ -480,6 +481,47 @@ public class DataRecordGroupSpyTest {
 				.getValueForMethodNameAndCallNumberAndParameterName(ADD_CALL_AND_RETURN_FROM_MRV, 0,
 						"childAttributes");
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "childAttributes", returnValue);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
+	}
+
+	@Test
+	public void testDefaultGetAllChildrenMatchingFilter() throws Exception {
+		DataChildFilter childFilter = new DataChildFilterSpy();
+		assertTrue(dataGroup.getAllChildrenMatchingFilter(childFilter) instanceof List<DataChild>);
+	}
+
+	@Test
+	public void testGetAllChildrenMatchingFilter() throws Exception {
+		dataGroup.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				ArrayList<DataChildFilter>::new);
+		DataChildFilter childFilter = new DataChildFilterSpy();
+
+		List<DataChild> retunedValue = dataGroup.getAllChildrenMatchingFilter(childFilter);
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "childFilter", childFilter);
+
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
+	}
+
+	@Test
+	public void testDefaultRemoveAllChildrenMatchingFilter() throws Exception {
+		DataChildFilter childFilter = new DataChildFilterSpy();
+		assertTrue(dataGroup.removeAllChildrenMatchingFilter(childFilter));
+	}
+
+	@Test
+	public void testRemoveAllChildrenMatchingFilter() throws Exception {
+		dataGroup.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				(Supplier<Boolean>) () -> false);
+		DataChildFilter childFilter = new DataChildFilterSpy();
+
+		boolean retunedValue = dataGroup.removeAllChildrenMatchingFilter(childFilter);
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "childFilter", childFilter);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
 	}
 

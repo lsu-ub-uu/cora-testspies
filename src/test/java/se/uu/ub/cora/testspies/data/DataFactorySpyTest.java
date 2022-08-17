@@ -26,6 +26,7 @@ import org.testng.annotations.Test;
 
 import se.uu.ub.cora.data.DataAtomic;
 import se.uu.ub.cora.data.DataAttribute;
+import se.uu.ub.cora.data.DataChildFilter;
 import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.data.DataList;
 import se.uu.ub.cora.data.DataRecord;
@@ -271,6 +272,26 @@ public class DataFactorySpyTest {
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "value", "value");
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
+	}
+
+	@Test
+	public void testDefaultFactorDataChildFilterUsingNameInData() throws Exception {
+		assertTrue(dataFactory
+				.factorDataChildFilterUsingNameInData("nameInData") instanceof DataChildFilterSpy);
+	}
+
+	@Test
+	public void testFactorDataChildFilterUsingNameInData() throws Exception {
+		dataFactory.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				DataChildFilterSpy::new);
+
+		DataChildFilter retunedValue = dataFactory
+				.factorDataChildFilterUsingNameInData("nameInData");
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "childNameInData", "nameInData");
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
 	}
 }
