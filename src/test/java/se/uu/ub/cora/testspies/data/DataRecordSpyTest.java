@@ -18,12 +18,17 @@
  */
 package se.uu.ub.cora.testspies.data;
 
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import se.uu.ub.cora.data.Action;
 import se.uu.ub.cora.testspies.spy.MCRSpy;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
@@ -107,9 +112,53 @@ public class DataRecordSpyTest {
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
 	}
 
-	// TODO:addAction
-	// TODO:hasActions
-	// TODO:getActions
+	@Test
+	public void testAddAction() throws Exception {
+		dataRecord.MCR = MCRSpy;
+		Action someAction = Action.BATCH_INDEX;
+
+		dataRecord.addAction(someAction);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "action", someAction);
+	}
+
+	@Test
+	public void testDefaultHasActions() throws Exception {
+		assertFalse(dataRecord.hasActions());
+	}
+
+	@Test
+	public void testHasActions() throws Exception {
+		dataRecord.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				(Supplier<Boolean>) () -> true);
+
+		var returnedValue = dataRecord.hasActions();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultGetActions() throws Exception {
+		assertTrue(dataRecord.getActions() instanceof List<Action>);
+	}
+
+	@Test
+	public void testGetActions() throws Exception {
+		dataRecord.MCR = MCRSpy;
+
+		List<Action> actions = List.of(Action.CREATE, Action.DELETE);
+
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				(Supplier<List<Action>>) () -> actions);
+
+		var returnedValue = dataRecord.getActions();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
 	// TODO:addReadPermission
 	// TODO:addReadPermissions
 	// TODO:getReadPermissions

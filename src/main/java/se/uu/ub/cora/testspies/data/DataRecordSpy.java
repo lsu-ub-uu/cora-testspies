@@ -19,8 +19,10 @@
 package se.uu.ub.cora.testspies.data;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import se.uu.ub.cora.data.Action;
 import se.uu.ub.cora.data.DataGroup;
@@ -39,6 +41,8 @@ public class DataRecordSpy implements DataRecord {
 		MRV.setDefaultReturnValuesSupplier("getId", String::new);
 		MRV.setDefaultReturnValuesSupplier("getSearchId", String::new);
 		MRV.setDefaultReturnValuesSupplier("getDataGroup", DataGroupSpy::new);
+		MRV.setDefaultReturnValuesSupplier("hasActions", (Supplier<Boolean>) () -> false);
+		MRV.setDefaultReturnValuesSupplier("getActions", Collections::emptyList);
 	}
 
 	@Override
@@ -64,20 +68,17 @@ public class DataRecordSpy implements DataRecord {
 
 	@Override
 	public void addAction(Action action) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("action", action);
 	}
 
 	@Override
 	public boolean hasActions() {
-		// TODO Auto-generated method stub
-		return false;
+		return (boolean) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public List<Action> getActions() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<Action>) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
