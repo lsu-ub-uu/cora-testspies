@@ -22,7 +22,9 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import org.testng.annotations.BeforeMethod;
@@ -159,14 +161,123 @@ public class DataRecordSpyTest {
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
 	}
 
-	// TODO:addReadPermission
-	// TODO:addReadPermissions
-	// TODO:getReadPermissions
-	// TODO:hasReadPermissions
-	// TODO:addWritePermission
-	// TODO:addWritePermissions
-	// TODO:getWritePermissions
-	// TODO:hasWritePermissions
+	@Test
+	public void testAddReadPermission() throws Exception {
+		dataRecord.MCR = MCRSpy;
+
+		dataRecord.addReadPermission("aReadPermission");
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "readPermission", "aReadPermission");
+	}
+
+	@Test
+	public void testAddReadPermissions() throws Exception {
+		dataRecord.MCR = MCRSpy;
+
+		Collection<String> readPermissions = Set.of("aReadPermission", "anotherReadPermission");
+		dataRecord.addReadPermissions(readPermissions);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "readPermissions", readPermissions);
+	}
+
+	@Test
+	public void testDefaultHasReadPermissions() throws Exception {
+
+		assertFalse(dataRecord.hasReadPermissions());
+	}
+
+	@Test
+	public void testHasReadPermissions() throws Exception {
+		dataRecord.MCR = MCRSpy;
+
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				(Supplier<Boolean>) () -> true);
+
+		boolean returnedValue = dataRecord.hasReadPermissions();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultGetReadPermissions() throws Exception {
+
+		Set<String> returnedValue = dataRecord.getReadPermissions();
+
+		assertTrue(returnedValue.isEmpty());
+	}
+
+	@Test
+	public void testGetReadPermissions() throws Exception {
+		dataRecord.MCR = MCRSpy;
+		Set<String> readPermissions = Set.of("aReadPermission", "anotherReadPermission");
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				(Supplier<Set<String>>) () -> readPermissions);
+
+		Set<String> returnedValue = dataRecord.getReadPermissions();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testAddWritePermission() throws Exception {
+		dataRecord.MCR = MCRSpy;
+
+		dataRecord.addWritePermission("aWritePermission");
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "writePermission", "aWritePermission");
+	}
+
+	@Test
+	public void testAddWritePermissions() throws Exception {
+		dataRecord.MCR = MCRSpy;
+
+		Collection<String> writePermissions = Set.of("aWritePermission", "anotherReadPermission");
+		dataRecord.addWritePermissions(writePermissions);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "writePermissions", writePermissions);
+	}
+
+	@Test
+	public void testDefaultHasWritePermissions() throws Exception {
+		assertFalse(dataRecord.hasWritePermissions());
+	}
+
+	@Test
+	public void testHasWritePermissions() throws Exception {
+
+		dataRecord.MCR = MCRSpy;
+
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				(Supplier<Boolean>) () -> true);
+
+		boolean returnedValue = dataRecord.hasWritePermissions();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultGetWritePermissions() throws Exception {
+		Set<String> returnedValue = dataRecord.getWritePermissions();
+
+		assertTrue(returnedValue.isEmpty());
+	}
+
+	@Test
+	public void testGetWritePermissions() throws Exception {
+		dataRecord.MCR = MCRSpy;
+		Set<String> writePermissions = Set.of("aWritePermission", "anotherWritePermission");
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				(Supplier<Set<String>>) () -> writePermissions);
+
+		Set<String> returnedValue = dataRecord.getWritePermissions();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
 	@Test
 	public void testDefaultGetSearchId() throws Exception {
 		assertTrue(dataRecord.getSearchId() instanceof String);
