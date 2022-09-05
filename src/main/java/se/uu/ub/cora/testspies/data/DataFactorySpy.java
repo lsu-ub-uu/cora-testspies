@@ -20,6 +20,7 @@ package se.uu.ub.cora.testspies.data;
 
 import se.uu.ub.cora.data.DataAtomic;
 import se.uu.ub.cora.data.DataAttribute;
+import se.uu.ub.cora.data.DataChildFilter;
 import se.uu.ub.cora.data.DataFactory;
 import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.data.DataList;
@@ -57,6 +58,8 @@ public class DataFactorySpy implements DataFactory {
 				DataAtomicSpy::new);
 		MRV.setDefaultReturnValuesSupplier("factorAttributeUsingNameInDataAndValue",
 				DataAttributeSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorDataChildFilterUsingNameInData",
+				DataChildFilterSpy::new);
 	}
 
 	@Override
@@ -117,6 +120,11 @@ public class DataFactorySpy implements DataFactory {
 	public DataAttribute factorAttributeUsingNameInDataAndValue(String nameInData, String value) {
 		return (DataAttribute) MCR.addCallAndReturnFromMRV("nameInData", nameInData, "value",
 				value);
+	}
+
+	@Override
+	public DataChildFilter factorDataChildFilterUsingNameInData(String childNameInData) {
+		return (DataChildFilter) MCR.addCallAndReturnFromMRV("childNameInData", childNameInData);
 	}
 
 }

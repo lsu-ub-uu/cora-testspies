@@ -19,8 +19,10 @@
 package se.uu.ub.cora.testspies.data;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import se.uu.ub.cora.data.Action;
 import se.uu.ub.cora.data.DataGroup;
@@ -37,8 +39,15 @@ public class DataRecordSpy implements DataRecord {
 		MCR.useMRV(MRV);
 		MRV.setDefaultReturnValuesSupplier("getType", String::new);
 		MRV.setDefaultReturnValuesSupplier("getId", String::new);
-		MRV.setDefaultReturnValuesSupplier("getSearchId", String::new);
 		MRV.setDefaultReturnValuesSupplier("getDataGroup", DataGroupSpy::new);
+		MRV.setDefaultReturnValuesSupplier("hasActions", (Supplier<Boolean>) () -> false);
+		MRV.setDefaultReturnValuesSupplier("hasActions", (Supplier<Boolean>) () -> false);
+		MRV.setDefaultReturnValuesSupplier("getActions", Collections::emptyList);
+		MRV.setDefaultReturnValuesSupplier("hasReadPermissions", (Supplier<Boolean>) () -> false);
+		MRV.setDefaultReturnValuesSupplier("getReadPermissions", Collections::emptySet);
+		MRV.setDefaultReturnValuesSupplier("hasWritePermissions", (Supplier<Boolean>) () -> false);
+		MRV.setDefaultReturnValuesSupplier("getWritePermissions", Collections::emptySet);
+		MRV.setDefaultReturnValuesSupplier("getSearchId", String::new);
 	}
 
 	@Override
@@ -64,68 +73,59 @@ public class DataRecordSpy implements DataRecord {
 
 	@Override
 	public void addAction(Action action) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("action", action);
 	}
 
 	@Override
 	public boolean hasActions() {
-		// TODO Auto-generated method stub
-		return false;
+		return (boolean) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public List<Action> getActions() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<Action>) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public void addReadPermission(String readPermission) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("readPermission", readPermission);
 	}
 
 	@Override
 	public void addReadPermissions(Collection<String> readPermissions) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("readPermissions", readPermissions);
 	}
 
 	@Override
 	public Set<String> getReadPermissions() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Set<String>) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public boolean hasReadPermissions() {
-		// TODO Auto-generated method stub
-		return false;
+		return (boolean) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public void addWritePermission(String writePermission) {
-		// TODO Auto-generated method stub
+		MCR.addCall("writePermission", writePermission);
 
 	}
 
 	@Override
 	public void addWritePermissions(Collection<String> writePermissions) {
-		// TODO Auto-generated method stub
+		MCR.addCall("writePermissions", writePermissions);
 
 	}
 
 	@Override
 	public Set<String> getWritePermissions() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Set<String>) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public boolean hasWritePermissions() {
-		// TODO Auto-generated method stub
-		return false;
+		return (boolean) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
