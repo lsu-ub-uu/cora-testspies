@@ -1,5 +1,6 @@
 /*
  * Copyright 2022 Olov McKie
+ * Copyright 2022 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -18,6 +19,7 @@
  */
 package se.uu.ub.cora.testspies.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import se.uu.ub.cora.data.Data;
@@ -32,68 +34,55 @@ public class DataListSpy implements DataList {
 
 	public DataListSpy() {
 		MCR.useMRV(MRV);
-		// MRV.setDefaultReturnValuesSupplier("hasReadAction", (Supplier<Boolean>) () -> false);
-		// MRV.setDefaultReturnValuesSupplier("getRepeatId", String::new);
-		// MRV.setDefaultReturnValuesSupplier("getNameInData", String::new);
-		// MRV.setDefaultReturnValuesSupplier("hasAttributes", (Supplier<Boolean>) () -> false);
-		// MRV.setDefaultReturnValuesSupplier("getAttribute", DataAttributeSpy::new);
-		// MRV.setDefaultReturnValuesSupplier("getAttributes", ArrayList<DataAttribute>::new);
-		// MRV.setDefaultReturnValuesSupplier("getLinkedRecordId", String::new);
-		// MRV.setDefaultReturnValuesSupplier("getLinkedRecordType", String::new);
+		MRV.setDefaultReturnValuesSupplier("getFromNo", String::new);
+		MRV.setDefaultReturnValuesSupplier("getToNo", String::new);
+		MRV.setDefaultReturnValuesSupplier("getTotalNumberOfTypeInStorage", String::new);
+		MRV.setDefaultReturnValuesSupplier("getContainDataOfType", String::new);
+		MRV.setDefaultReturnValuesSupplier("getDataList", ArrayList<Data>::new);
 	}
 
 	@Override
 	public String getFromNo() {
-		// TODO Auto-generated method stub
-		return null;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public String getToNo() {
-		// TODO Auto-generated method stub
-		return null;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public String getTotalNumberOfTypeInStorage() {
-		// TODO Auto-generated method stub
-		return null;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public String getContainDataOfType() {
-		// TODO Auto-generated method stub
-		return null;
+		return (String) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public List<Data> getDataList() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<Data>) MCR.addCallAndReturnFromMRV();
 	}
 
 	@Override
 	public void addData(Data data) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("data", data);
 	}
 
 	@Override
 	public void setFromNo(String position) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("position", position);
 	}
 
 	@Override
 	public void setToNo(String position) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("position", position);
 	}
 
 	@Override
 	public void setTotalNo(String totalNumber) {
-		// TODO Auto-generated method stub
-
+		MCR.addCall("totalNumber", totalNumber);
 	}
-
 }

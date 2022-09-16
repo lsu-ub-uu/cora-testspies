@@ -1,5 +1,6 @@
 /*
  * Copyright 2022 Olov McKie
+ * Copyright 2022 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -21,9 +22,13 @@ package se.uu.ub.cora.testspies.data;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import se.uu.ub.cora.data.Data;
 import se.uu.ub.cora.testspies.spy.MCRSpy;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
@@ -47,6 +52,129 @@ public class DataListSpyTest {
 		assertTrue(dataList.MCR instanceof MethodCallRecorder);
 		assertTrue(dataList.MRV instanceof MethodReturnValues);
 		assertSame(dataList.MCR.onlyForTestGetMRV(), dataList.MRV);
+	}
+
+	@Test
+	public void testDefaultGetFromNo() throws Exception {
+		assertTrue(dataList.getFromNo() instanceof String);
+	}
+
+	@Test
+	public void testGetFromNo() throws Exception {
+		dataList.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataList.getFromNo();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultGetToNo() throws Exception {
+		assertTrue(dataList.getToNo() instanceof String);
+	}
+
+	@Test
+	public void testGetToNo() throws Exception {
+		dataList.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataList.getToNo();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testDefaultGetTotalNumberOfTypeInStorage() throws Exception {
+		assertTrue(dataList.getTotalNumberOfTypeInStorage() instanceof String);
+	}
+
+	@Test
+	public void testGetTotalNumberOfTypeInStorage() throws Exception {
+		dataList.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataList.getTotalNumberOfTypeInStorage();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+
+	public void testDefaultGetContainDataOfType() throws Exception {
+		assertTrue(dataList.getContainDataOfType() instanceof String);
+	}
+
+	@Test
+	public void testGetContainDataOfType() throws Exception {
+		dataList.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataList.getContainDataOfType();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+
+	public void testDefaultGetDataList() throws Exception {
+		assertTrue(dataList.getDataList() instanceof List);
+	}
+
+	@Test
+	public void testGetDataList() throws Exception {
+		dataList.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				ArrayList<Data>::new);
+
+		List<Data> returnedValue = dataList.getDataList();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testAddData() throws Exception {
+		Data data = new DataRecordSpy();
+		dataList.MCR = MCRSpy;
+
+		dataList.addData(data);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "data", data);
+	}
+
+	@Test
+	public void testSetFromNo() throws Exception {
+		String postion = "";
+		dataList.MCR = MCRSpy;
+
+		dataList.setFromNo(postion);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "position", postion);
+	}
+
+	@Test
+	public void testSetToNo() throws Exception {
+		String postion = "";
+		dataList.MCR = MCRSpy;
+
+		dataList.setToNo(postion);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "position", postion);
+	}
+
+	@Test
+	public void testSetTotalNo() throws Exception {
+		String totalNumber = "";
+		dataList.MCR = MCRSpy;
+
+		dataList.setTotalNo(totalNumber);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "totalNumber", totalNumber);
 	}
 
 }
