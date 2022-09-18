@@ -14,7 +14,7 @@
 	
 	<properties>
 		<logger.version>2.5.0</logger.version>
-		<coradata.version>7.1.0</coradata.version>
+		<coradata.version>7.2-SNAPSHOT</coradata.version>
 		<json.version>3.3.0</json.version>
 		<spider.version>7.1.0</spider.version>
 		<testutils.version>1.5.0</testutils.version>

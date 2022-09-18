@@ -45,6 +45,7 @@ public class DataFactorySpy implements DataFactory {
 				DataRecordGroupSpy::new);
 		MRV.setDefaultReturnValuesSupplier("factorRecordGroupFromDataGroup",
 				DataRecordGroupSpy::new);
+		MRV.setDefaultReturnValuesSupplier("factorGroupFromDataRecordGroup", DataGroupSpy::new);
 		MRV.setDefaultReturnValuesSupplier("factorGroupUsingNameInData", DataGroupSpy::new);
 		MRV.setDefaultReturnValuesSupplier("factorRecordLinkUsingNameInData",
 				DataRecordLinkSpy::new);
@@ -80,6 +81,11 @@ public class DataFactorySpy implements DataFactory {
 	@Override
 	public DataRecordGroup factorRecordGroupFromDataGroup(DataGroup dataGroup) {
 		return (DataRecordGroup) MCR.addCallAndReturnFromMRV("dataGroup", dataGroup);
+	}
+
+	@Override
+	public DataGroup factorGroupFromDataRecordGroup(DataRecordGroup dataRecordGroup) {
+		return (DataGroup) MCR.addCallAndReturnFromMRV("dataRecordGroup", dataRecordGroup);
 	}
 
 	@Override

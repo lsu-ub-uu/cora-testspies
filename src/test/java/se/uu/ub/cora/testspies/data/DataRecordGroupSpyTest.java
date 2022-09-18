@@ -42,7 +42,7 @@ import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 public class DataRecordGroupSpyTest {
 	private static final String ADD_CALL = "addCall";
 	private static final String ADD_CALL_AND_RETURN_FROM_MRV = "addCallAndReturnFromMRV";
-	DataRecordGroupSpy dataGroup;
+	DataRecordGroupSpy dataRecordGroup;
 	private MCRSpy MCRSpy;
 	private MethodCallRecorder mcrForSpy;
 
@@ -50,29 +50,29 @@ public class DataRecordGroupSpyTest {
 	public void beforeMethod() {
 		MCRSpy = new MCRSpy();
 		mcrForSpy = MCRSpy.MCR;
-		dataGroup = new DataRecordGroupSpy();
+		dataRecordGroup = new DataRecordGroupSpy();
 	}
 
 	@Test
 	public void testMakeSureSpyHelpersAreSetUp() throws Exception {
-		assertTrue(dataGroup.MCR instanceof MethodCallRecorder);
-		assertTrue(dataGroup.MRV instanceof MethodReturnValues);
-		assertSame(dataGroup.MCR.onlyForTestGetMRV(), dataGroup.MRV);
+		assertTrue(dataRecordGroup.MCR instanceof MethodCallRecorder);
+		assertTrue(dataRecordGroup.MRV instanceof MethodReturnValues);
+		assertSame(dataRecordGroup.MCR.onlyForTestGetMRV(), dataRecordGroup.MRV);
 	}
 
 	@Test
 	public void testAddChildNoSpy() throws Exception {
 		DataChildSpy dataChild = new DataChildSpy();
-		dataGroup.addChild(dataChild);
+		dataRecordGroup.addChild(dataChild);
 
-		dataGroup.MCR.assertParameter("addChild", 0, "dataChild", dataChild);
+		dataRecordGroup.MCR.assertParameter("addChild", 0, "dataChild", dataChild);
 	}
 
 	@Test
 	public void testAddAttributeByIdWithValue() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 
-		dataGroup.addAttributeByIdWithValue("attribId", "attribValue");
+		dataRecordGroup.addAttributeByIdWithValue("attribId", "attribValue");
 
 		mcrForSpy.assertParameter(ADD_CALL, 0, "nameInData", "attribId");
 		mcrForSpy.assertParameter(ADD_CALL, 0, "value", "attribValue");
@@ -80,16 +80,16 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultHasAttributes() throws Exception {
-		assertFalse(dataGroup.hasAttributes());
+		assertFalse(dataRecordGroup.hasAttributes());
 	}
 
 	@Test
 	public void testHasAttributes() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				(Supplier<Boolean>) () -> true);
 
-		boolean retunedValue = dataGroup.hasAttributes();
+		boolean retunedValue = dataRecordGroup.hasAttributes();
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
@@ -97,16 +97,16 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultGetAttribute() throws Exception {
-		assertTrue(dataGroup.getAttribute("nameInData") instanceof DataAttribute);
+		assertTrue(dataRecordGroup.getAttribute("nameInData") instanceof DataAttribute);
 	}
 
 	@Test
 	public void testGetAttribute() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				DataAttributeSpy::new);
 
-		var returnedValue = dataGroup.getAttribute("nameInData");
+		var returnedValue = dataRecordGroup.getAttribute("nameInData");
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
@@ -115,16 +115,16 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultGetAttributes() throws Exception {
-		assertTrue(dataGroup.getAttributes() instanceof Collection<DataAttribute>);
+		assertTrue(dataRecordGroup.getAttributes() instanceof Collection<DataAttribute>);
 	}
 
 	@Test
 	public void testGetAttributes() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				ArrayList<DataAttribute>::new);
 
-		var returnedValue = dataGroup.getAttributes();
+		var returnedValue = dataRecordGroup.getAttributes();
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
@@ -132,15 +132,15 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultGetNameInData() throws Exception {
-		assertTrue(dataGroup.getNameInData() instanceof String);
+		assertTrue(dataRecordGroup.getNameInData() instanceof String);
 	}
 
 	@Test
 	public void testGetNameInData() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
 
-		String returnedValue = dataGroup.getNameInData();
+		String returnedValue = dataRecordGroup.getNameInData();
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
@@ -148,16 +148,16 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultHasChildren() throws Exception {
-		assertTrue(dataGroup.hasChildren());
+		assertTrue(dataRecordGroup.hasChildren());
 	}
 
 	@Test
 	public void testHasChildren() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				(Supplier<Boolean>) () -> false);
 
-		boolean retunedValue = dataGroup.hasChildren();
+		boolean retunedValue = dataRecordGroup.hasChildren();
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
@@ -165,16 +165,16 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultContainsChildWithNameInData() throws Exception {
-		assertFalse(dataGroup.containsChildWithNameInData("nameInData"));
+		assertFalse(dataRecordGroup.containsChildWithNameInData("nameInData"));
 	}
 
 	@Test
 	public void testContainsChildWithNameInData() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				(Supplier<Boolean>) () -> false);
 
-		boolean retunedValue = dataGroup.containsChildWithNameInData("nameInData");
+		boolean retunedValue = dataRecordGroup.containsChildWithNameInData("nameInData");
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
@@ -184,9 +184,9 @@ public class DataRecordGroupSpyTest {
 	@Test
 	public void testAddChild() throws Exception {
 		DataChildSpy dataChild = new DataChildSpy();
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 
-		dataGroup.addChild(dataChild);
+		dataRecordGroup.addChild(dataChild);
 
 		mcrForSpy.assertParameter(ADD_CALL, 0, "dataChild", dataChild);
 	}
@@ -194,25 +194,25 @@ public class DataRecordGroupSpyTest {
 	@Test
 	public void testAddChildren() throws Exception {
 		Collection<DataChild> children = new ArrayList<>();
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 
-		dataGroup.addChildren(children);
+		dataRecordGroup.addChildren(children);
 
 		mcrForSpy.assertParameter(ADD_CALL, 0, "dataChildren", children);
 	}
 
 	@Test
 	public void testDefaultGetChildren() throws Exception {
-		assertTrue(dataGroup.getChildren() instanceof List<DataChild>);
+		assertTrue(dataRecordGroup.getChildren() instanceof List<DataChild>);
 	}
 
 	@Test
 	public void testGetChildren() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				ArrayList<DataChild>::new);
 
-		List<DataChild> retunedValue = dataGroup.getChildren();
+		List<DataChild> retunedValue = dataRecordGroup.getChildren();
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
@@ -220,16 +220,17 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultGetAllChildrenWithNameInData() throws Exception {
-		assertTrue(dataGroup.getAllChildrenWithNameInData("nameInData") instanceof List<DataChild>);
+		assertTrue(dataRecordGroup
+				.getAllChildrenWithNameInData("nameInData") instanceof List<DataChild>);
 	}
 
 	@Test
 	public void testGetAllChildrenWithNameInData() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				ArrayList<DataChild>::new);
 
-		List<DataChild> retunedValue = dataGroup.getAllChildrenWithNameInData("nameInData");
+		List<DataChild> retunedValue = dataRecordGroup.getAllChildrenWithNameInData("nameInData");
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
@@ -239,18 +240,18 @@ public class DataRecordGroupSpyTest {
 	@Test
 	public void testDefaultGetAllChildrenWithNameInDataAndAttributes() throws Exception {
 		DataAttribute dataAttribute = new DataAttributeSpy();
-		assertTrue(dataGroup.getAllChildrenWithNameInDataAndAttributes("nameInData",
+		assertTrue(dataRecordGroup.getAllChildrenWithNameInDataAndAttributes("nameInData",
 				dataAttribute) instanceof List<DataChild>);
 	}
 
 	@Test
 	public void testGetAllChildrenWithNameInDataAndAttributes() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				ArrayList<DataChild>::new);
 		DataAttribute dataAttribute = new DataAttributeSpy();
 
-		List<DataChild> retunedValue = dataGroup
+		List<DataChild> retunedValue = dataRecordGroup
 				.getAllChildrenWithNameInDataAndAttributes("nameInData", dataAttribute);
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
@@ -264,15 +265,16 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultGetFirstChildWithNameInData() throws Exception {
-		assertTrue(dataGroup.getFirstChildWithNameInData("nameInData") instanceof DataChildSpy);
+		assertTrue(
+				dataRecordGroup.getFirstChildWithNameInData("nameInData") instanceof DataChildSpy);
 	}
 
 	@Test
 	public void testGetFirstChildWithNameInData() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, DataChildSpy::new);
 
-		DataChild retunedValue = dataGroup.getFirstChildWithNameInData("nameInData");
+		DataChild retunedValue = dataRecordGroup.getFirstChildWithNameInData("nameInData");
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
@@ -281,15 +283,16 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultGetFirstAtomicValueWithNameInData() throws Exception {
-		assertTrue(dataGroup.getFirstAtomicValueWithNameInData("nameInData") instanceof String);
+		assertTrue(
+				dataRecordGroup.getFirstAtomicValueWithNameInData("nameInData") instanceof String);
 	}
 
 	@Test
 	public void testGetFirstAtomicValueWithNameInData() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
 
-		String retunedValue = dataGroup.getFirstAtomicValueWithNameInData("nameInData");
+		String retunedValue = dataRecordGroup.getFirstAtomicValueWithNameInData("nameInData");
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
@@ -299,16 +302,16 @@ public class DataRecordGroupSpyTest {
 	// TODO
 	@Test
 	public void testDefaultGetFirstDataAtomicWithNameInData() throws Exception {
-		assertTrue(
-				dataGroup.getFirstDataAtomicWithNameInData("nameInData") instanceof DataAtomicSpy);
+		assertTrue(dataRecordGroup
+				.getFirstDataAtomicWithNameInData("nameInData") instanceof DataAtomicSpy);
 	}
 
 	@Test
 	public void testGetFirstDataAtomicWithNameInData() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, DataAtomicSpy::new);
 
-		DataChild retunedValue = dataGroup.getFirstDataAtomicWithNameInData("nameInData");
+		DataChild retunedValue = dataRecordGroup.getFirstDataAtomicWithNameInData("nameInData");
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
@@ -317,17 +320,18 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultGetAllDataAtomicsWithNameInData() throws Exception {
-		assertTrue(dataGroup
+		assertTrue(dataRecordGroup
 				.getAllDataAtomicsWithNameInData("nameInData") instanceof List<DataAtomic>);
 	}
 
 	@Test
 	public void testGetAllDataAtomicsWithNameInData() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				ArrayList<DataAtomic>::new);
 
-		List<DataAtomic> retunedValue = dataGroup.getAllDataAtomicsWithNameInData("nameInData");
+		List<DataAtomic> retunedValue = dataRecordGroup
+				.getAllDataAtomicsWithNameInData("nameInData");
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
@@ -337,18 +341,18 @@ public class DataRecordGroupSpyTest {
 	@Test
 	public void testDefaultGetAllDataAtomicsWithNameInDataAndAttributes() throws Exception {
 		DataAttribute dataAttribute = new DataAttributeSpy();
-		assertTrue(dataGroup.getAllDataAtomicsWithNameInDataAndAttributes("nameInData",
+		assertTrue(dataRecordGroup.getAllDataAtomicsWithNameInDataAndAttributes("nameInData",
 				dataAttribute) instanceof List<DataAtomic>);
 	}
 
 	@Test
 	public void testGetAllDataAtomicsWithNameInDataAndAttributes() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				ArrayList<DataAtomic>::new);
 		DataAttribute dataAttribute = new DataAttributeSpy();
 
-		List<DataAtomic> retunedValue = (List<DataAtomic>) dataGroup
+		List<DataAtomic> retunedValue = (List<DataAtomic>) dataRecordGroup
 				.getAllDataAtomicsWithNameInDataAndAttributes("nameInData", dataAttribute);
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
@@ -362,15 +366,16 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultGetFirstGroupWithNameInData() throws Exception {
-		assertTrue(dataGroup.getFirstGroupWithNameInData("nameInData") instanceof DataGroupSpy);
+		assertTrue(
+				dataRecordGroup.getFirstGroupWithNameInData("nameInData") instanceof DataGroupSpy);
 	}
 
 	@Test
 	public void testGetFirstGroupWithNameInData() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, DataGroupSpy::new);
 
-		DataGroup retunedValue = dataGroup.getFirstGroupWithNameInData("nameInData");
+		DataGroup retunedValue = dataRecordGroup.getFirstGroupWithNameInData("nameInData");
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
@@ -379,17 +384,17 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultGetAllGroupsWithNameInData() throws Exception {
-		assertTrue(dataGroup
+		assertTrue(dataRecordGroup
 				.getAllGroupsWithNameInData("nameInData") instanceof Collection<DataGroup>);
 	}
 
 	@Test
 	public void testGetAllGroupsWithNameInData() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				ArrayList<DataAtomic>::new);
 
-		List<DataGroup> retunedValue = dataGroup.getAllGroupsWithNameInData("nameInData");
+		List<DataGroup> retunedValue = dataRecordGroup.getAllGroupsWithNameInData("nameInData");
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
@@ -399,18 +404,18 @@ public class DataRecordGroupSpyTest {
 	@Test
 	public void testDefaultGetAllGroupsWithNameInDataAndAttributes() throws Exception {
 		DataAttribute dataAttribute = new DataAttributeSpy();
-		assertTrue(dataGroup.getAllGroupsWithNameInDataAndAttributes("nameInData",
+		assertTrue(dataRecordGroup.getAllGroupsWithNameInDataAndAttributes("nameInData",
 				dataAttribute) instanceof Collection<DataGroup>);
 	}
 
 	@Test
 	public void testGetAllGroupsWithNameInDataAndAttributes() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				ArrayList<DataAtomic>::new);
 		DataAttribute dataAttribute = new DataAttributeSpy();
 
-		Collection<DataGroup> retunedValue = dataGroup
+		Collection<DataGroup> retunedValue = dataRecordGroup
 				.getAllGroupsWithNameInDataAndAttributes("nameInData", dataAttribute);
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
@@ -424,16 +429,16 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultRemoveFirstChildWithNameInData() throws Exception {
-		assertTrue(dataGroup.removeFirstChildWithNameInData("nameInData"));
+		assertTrue(dataRecordGroup.removeFirstChildWithNameInData("nameInData"));
 	}
 
 	@Test
 	public void testRemoveFirstChildWithNameInData() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				(Supplier<Boolean>) () -> false);
 
-		boolean retunedValue = dataGroup.removeFirstChildWithNameInData("nameInData");
+		boolean retunedValue = dataRecordGroup.removeFirstChildWithNameInData("nameInData");
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
@@ -442,16 +447,16 @@ public class DataRecordGroupSpyTest {
 
 	@Test
 	public void testDefaultRemoveAllChildrenWithNameInData() throws Exception {
-		assertTrue(dataGroup.removeAllChildrenWithNameInData("nameInData"));
+		assertTrue(dataRecordGroup.removeAllChildrenWithNameInData("nameInData"));
 	}
 
 	@Test
 	public void testRemoveAllChildrenWithNameInData() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				(Supplier<Boolean>) () -> false);
 
-		boolean retunedValue = dataGroup.removeAllChildrenWithNameInData("nameInData");
+		boolean retunedValue = dataRecordGroup.removeAllChildrenWithNameInData("nameInData");
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
@@ -461,19 +466,19 @@ public class DataRecordGroupSpyTest {
 	@Test
 	public void testDefaultRemoveAllChildrenWithNameInDataAndAttributes() throws Exception {
 		DataAttribute dataAttribute = new DataAttributeSpy();
-		assertTrue(dataGroup.removeAllChildrenWithNameInDataAndAttributes("nameInData",
+		assertTrue(dataRecordGroup.removeAllChildrenWithNameInDataAndAttributes("nameInData",
 				dataAttribute));
 	}
 
 	@Test
 	public void testRemoveAllChildrenWithNameInDataAndAttributes() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				(Supplier<Boolean>) () -> false);
 		DataAttribute dataAttribute = new DataAttributeSpy();
 
-		boolean retunedValue = dataGroup.removeAllChildrenWithNameInDataAndAttributes("nameInData",
-				dataAttribute);
+		boolean retunedValue = dataRecordGroup
+				.removeAllChildrenWithNameInDataAndAttributes("nameInData", dataAttribute);
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "nameInData", "nameInData");
@@ -487,17 +492,18 @@ public class DataRecordGroupSpyTest {
 	@Test
 	public void testDefaultGetAllChildrenMatchingFilter() throws Exception {
 		DataChildFilter childFilter = new DataChildFilterSpy();
-		assertTrue(dataGroup.getAllChildrenMatchingFilter(childFilter) instanceof List<DataChild>);
+		assertTrue(dataRecordGroup
+				.getAllChildrenMatchingFilter(childFilter) instanceof List<DataChild>);
 	}
 
 	@Test
 	public void testGetAllChildrenMatchingFilter() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				ArrayList<DataChildFilter>::new);
 		DataChildFilter childFilter = new DataChildFilterSpy();
 
-		List<DataChild> retunedValue = dataGroup.getAllChildrenMatchingFilter(childFilter);
+		List<DataChild> retunedValue = dataRecordGroup.getAllChildrenMatchingFilter(childFilter);
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "childFilter", childFilter);
@@ -508,21 +514,98 @@ public class DataRecordGroupSpyTest {
 	@Test
 	public void testDefaultRemoveAllChildrenMatchingFilter() throws Exception {
 		DataChildFilter childFilter = new DataChildFilterSpy();
-		assertTrue(dataGroup.removeAllChildrenMatchingFilter(childFilter));
+		assertTrue(dataRecordGroup.removeAllChildrenMatchingFilter(childFilter));
 	}
 
 	@Test
 	public void testRemoveAllChildrenMatchingFilter() throws Exception {
-		dataGroup.MCR = MCRSpy;
+		dataRecordGroup.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
 				(Supplier<Boolean>) () -> false);
 		DataChildFilter childFilter = new DataChildFilterSpy();
 
-		boolean retunedValue = dataGroup.removeAllChildrenMatchingFilter(childFilter);
+		boolean retunedValue = dataRecordGroup.removeAllChildrenMatchingFilter(childFilter);
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
 		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "childFilter", childFilter);
 		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
 	}
 
+	@Test
+	public void testDefaultGetType() throws Exception {
+		assertTrue(dataRecordGroup.getType() instanceof String);
+	}
+
+	@Test
+	public void testGetType() throws Exception {
+		dataRecordGroup.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataRecordGroup.getType();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testSetType() throws Exception {
+		String type = "someType";
+		dataRecordGroup.MCR = MCRSpy;
+
+		dataRecordGroup.setType(type);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "type", type);
+	}
+
+	@Test
+	public void testDefaultGetId() throws Exception {
+		assertTrue(dataRecordGroup.getId() instanceof String);
+	}
+
+	@Test
+	public void testGetId() throws Exception {
+		dataRecordGroup.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataRecordGroup.getId();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testSetId() throws Exception {
+		String id = "someId";
+		dataRecordGroup.MCR = MCRSpy;
+
+		dataRecordGroup.setId(id);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "id", id);
+	}
+
+	@Test
+	public void testDefaultGetDataDivider() throws Exception {
+		assertTrue(dataRecordGroup.getDataDivider() instanceof String);
+	}
+
+	@Test
+	public void testGetDataDivider() throws Exception {
+		dataRecordGroup.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+
+		String returnedValue = dataRecordGroup.getDataDivider();
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
+	}
+
+	@Test
+	public void testSetDataDivider() throws Exception {
+		String dataDivider = "someDataDivider";
+		dataRecordGroup.MCR = MCRSpy;
+
+		dataRecordGroup.setDataDivider(dataDivider);
+
+		mcrForSpy.assertParameter(ADD_CALL, 0, "dataDivider", dataDivider);
+	}
 }
