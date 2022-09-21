@@ -72,6 +72,10 @@ public class DataRecordGroupSpy implements DataRecordGroup {
 				ArrayList<DataChild>::new);
 		MRV.setDefaultReturnValuesSupplier("removeAllChildrenMatchingFilter",
 				(Supplier<Boolean>) () -> true);
+
+		MRV.setDefaultReturnValuesSupplier("getType", String::new);
+		MRV.setDefaultReturnValuesSupplier("getId", String::new);
+		MRV.setDefaultReturnValuesSupplier("getDataDivider", String::new);
 	}
 
 	@Override
@@ -89,6 +93,7 @@ public class DataRecordGroupSpy implements DataRecordGroup {
 		return (DataAttribute) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<DataAttribute> getAttributes() {
 		return (Collection<DataAttribute>) MCR.addCallAndReturnFromMRV();
@@ -119,16 +124,19 @@ public class DataRecordGroupSpy implements DataRecordGroup {
 		MCR.addCall("dataChildren", dataChildren);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<DataChild> getChildren() {
 		return (List<DataChild>) MCR.addCallAndReturnFromMRV();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<DataChild> getAllChildrenWithNameInData(String nameInData) {
 		return (List<DataChild>) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<DataChild> getAllChildrenWithNameInDataAndAttributes(String nameInData,
 			DataAttribute... childAttributes) {
@@ -151,11 +159,13 @@ public class DataRecordGroupSpy implements DataRecordGroup {
 		return (DataAtomic) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<DataAtomic> getAllDataAtomicsWithNameInData(String nameInData) {
 		return (List<DataAtomic>) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<DataAtomic> getAllDataAtomicsWithNameInDataAndAttributes(String nameInData,
 			DataAttribute... childAttributes) {
@@ -168,11 +178,13 @@ public class DataRecordGroupSpy implements DataRecordGroup {
 		return (DataGroup) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<DataGroup> getAllGroupsWithNameInData(String nameInData) {
 		return (List<DataGroup>) MCR.addCallAndReturnFromMRV("nameInData", nameInData);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<DataGroup> getAllGroupsWithNameInDataAndAttributes(String nameInData,
 			DataAttribute... childAttributes) {
@@ -197,6 +209,7 @@ public class DataRecordGroupSpy implements DataRecordGroup {
 				childAttributes);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<DataChild> getAllChildrenMatchingFilter(DataChildFilter childFilter) {
 		return (List<DataChild>) MCR.addCallAndReturnFromMRV("childFilter", childFilter);
@@ -205,6 +218,36 @@ public class DataRecordGroupSpy implements DataRecordGroup {
 	@Override
 	public boolean removeAllChildrenMatchingFilter(DataChildFilter childFilter) {
 		return (boolean) MCR.addCallAndReturnFromMRV("childFilter", childFilter);
+	}
+
+	@Override
+	public String getType() {
+		return (String) MCR.addCallAndReturnFromMRV();
+	}
+
+	@Override
+	public void setType(String type) {
+		MCR.addCall("type", type);
+	}
+
+	@Override
+	public String getId() {
+		return (String) MCR.addCallAndReturnFromMRV();
+	}
+
+	@Override
+	public void setId(String id) {
+		MCR.addCall("id", id);
+	}
+
+	@Override
+	public String getDataDivider() {
+		return (String) MCR.addCallAndReturnFromMRV();
+	}
+
+	@Override
+	public void setDataDivider(String dataDivider) {
+		MCR.addCall("dataDivider", dataDivider);
 	}
 
 }

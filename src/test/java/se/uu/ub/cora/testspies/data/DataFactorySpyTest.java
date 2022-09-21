@@ -137,6 +137,27 @@ public class DataFactorySpyTest {
 	}
 
 	@Test
+	public void testDefaultFactorGroupFromDataRecordGroup() throws Exception {
+		DataRecordGroup dataRecordGroupSpy = new DataRecordGroupSpy();
+		assertTrue(dataFactory
+				.factorGroupFromDataRecordGroup(dataRecordGroupSpy) instanceof DataGroupSpy);
+	}
+
+	@Test
+	public void testFactorGroupFromDataRecordGroup() throws Exception {
+		dataFactory.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, DataGroupSpy::new);
+		DataRecordGroup dataRecordGroupSpy = new DataRecordGroupSpy();
+
+		DataGroup retunedValue = dataFactory.factorGroupFromDataRecordGroup(dataRecordGroupSpy);
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "dataRecordGroup",
+				dataRecordGroupSpy);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
+	}
+
+	@Test
 	public void testDefaultFactorGroupUsingNameInData() throws Exception {
 		assertTrue(dataFactory.factorGroupUsingNameInData("nameInData") instanceof DataGroupSpy);
 	}
