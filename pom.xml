@@ -16,13 +16,14 @@
 		<logger.version>2.5.0</logger.version>
 		<coradata.version>7.2-SNAPSHOT</coradata.version>
 		<json.version>3.3.0</json.version>
-		<spider.version>7.1.0</spider.version>
+		<spider.version>7.0-SNAPSHOT</spider.version>
 		<testutils.version>1.5.0</testutils.version>
 		<beefeater.version>3.7.0</beefeater.version>
-		<storage.version>6.3.0</storage.version>
+		<storage.version>7.0-SNAPSHOT</storage.version>
 		<search.version>4.4.0</search.version>
 		<bookkeeper.version>7.0.0</bookkeeper.version>
 		<httphandler.version>2.6.0</httphandler.version>
+		<testutils-spies.version>1.0-SNAPSHOT</testutils-spies.version>
 	</properties>
 	
 	<scm>
@@ -67,7 +68,7 @@
 			<groupId>se.uu.ub.cora</groupId>
 			<artifactId>storage</artifactId>
 			<version>${storage.version}</version>
-			<scope>provided</scope>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>se.uu.ub.cora</groupId>
@@ -87,6 +88,12 @@
             <version>${httphandler.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+			<groupId>se.uu.ub.cora</groupId>
+			<artifactId>testutils-spies</artifactId>
+			<version>${testutils-spies.version}</version>
+			<scope>test</scope>
+		</dependency>
         
 		<dependency>
 			<groupId>se.uu.ub.cora</groupId>

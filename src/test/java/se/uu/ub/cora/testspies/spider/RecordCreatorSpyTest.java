@@ -27,9 +27,9 @@ import org.testng.annotations.Test;
 import se.uu.ub.cora.data.DataRecord;
 import se.uu.ub.cora.testspies.data.DataGroupSpy;
 import se.uu.ub.cora.testspies.data.DataRecordSpy;
-import se.uu.ub.cora.testspies.spy.MCRSpy;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
+import se.uu.ub.cora.testutils.spies.MCRSpy;
 
 public class RecordCreatorSpyTest {
 	private static final String ADD_CALL = "addCall";

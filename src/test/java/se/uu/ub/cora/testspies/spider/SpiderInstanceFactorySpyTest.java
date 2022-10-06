@@ -26,9 +26,9 @@ import org.testng.annotations.Test;
 
 import se.uu.ub.cora.spider.record.IncomingLinksReader;
 import se.uu.ub.cora.spider.record.RecordListReader;
-import se.uu.ub.cora.testspies.spy.MCRSpy;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
+import se.uu.ub.cora.testutils.spies.MCRSpy;
 
 public class SpiderInstanceFactorySpyTest {
 	private static final String ADD_CALL = "addCall";
